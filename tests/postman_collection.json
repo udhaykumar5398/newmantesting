@@ -1,0 +1,4502 @@
+{
+	"info": {
+		"_postman_id": "b2e836ac-c32a-497c-bcf8-4aeb2871eadf",
+		"name": "IM Postman Automation issuerlogin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34000743",
+		"_collection_link": "https://winter-sunset-730665.postman.co/workspace/My-Workspace~a1a4ac1f-c8dc-4023-8505-fb8080fe4fc1/collection/34000743-b2e836ac-c32a-497c-bcf8-4aeb2871eadf?action=share&source=collection_link&creator=34000743"
+	},
+	"item": [
+		{
+			"name": "addPoolDocument(input)",
+			"item": [
+				{
+					"name": "addPoolDocument",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/rohityadav/Downloads/LMS_L50_9975121.xlsx"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/addPoolDocument",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"addPoolDocument"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "createpool",
+			"item": [
+				{
+					"name": "createpool(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 200\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(200);",
+									"});",
+									"",
+									"pm.test(\"Response should be successful\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Pool is Created!'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Pool is Created!\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'Created'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Created\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within 2 seconds\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolname\": \"test poolmar13\",\n    \"assetclass\": \"Residential Real Estate\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"description\": \"test\",\n    \"issuerName\": \"test\",\n    \"transactionType\": \"Securitization\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/createpool",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"createpool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 401\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(401);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Token Expired,Please log in again to continue.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message.trim()).to.equal(\"Token Expired,Please log in again to continue.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'Token Expired'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Token Expired\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE2NzIwNzksIkVtYWlsSWQiOiJ0ZXN0aXMyQGludGFpbmZ0LmNvbSIsIlJvbGUiOiJJc3N1ZXIiLCJ1c2VySWQiOiIxOTdmNjhhMi1kN2I5LTQyZWUtOGFjMC0xNmMzMTY1NzllNjkiLCJpYXQiOjE3NDE1ODU2Nzl9.TTk2VBEeqAX61ge40sDn_3d4XOYxfJBGhgInLYcE7yY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolname\": \"test poolmar13\",\n    \"assetclass\": \"Residential Real Estate\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"description\": \"test\",\n    \"issuerName\": \"test\",\n    \"transactionType\": \"Securitization\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/createpool",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"createpool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "transactionType is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"transactionType is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolname\": \"test poolmar13\",\n    \"assetclass\": \"Residential Real Estate\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"description\": \"test\",\n    \"issuerName\": \"test\",\n    \"transactionType\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/createpool",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"createpool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid transactionType(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 403\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(403);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Please enter a valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Please enter a valid transactionType\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"valid transactionType\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolname\": \"test poolmar13\",\n    \"assetclass\": \"Residential Real Estate\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"description\": \"test\",\n    \"issuerName\": \"test\",\n    \"transactionType\": \"@##\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/createpool",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"createpool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "issuerName is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"issuerName is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolname\": \"test poolmar13\",\n    \"assetclass\": \"Residential Real Estate\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"description\": \"test\",\n    \"issuerName\": \"\",\n    \"transactionType\": \"Securitization\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/createpool",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"createpool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid issuerName(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 403\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(403);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Please enter a valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Please enter a valid issuerName\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"valid issuerName\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolname\": \"test poolmar13\",\n    \"assetclass\": \"Residential Real Estate\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"description\": \"test\",\n    \"issuerName\": \"@#$\",\n    \"transactionType\": \"Securitization\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/createpool",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"createpool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "description is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"description is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolname\": \"test poolmar13\",\n    \"assetclass\": \"Residential Real Estate\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"description\": \"\",\n    \"issuerName\": \"test\",\n    \"transactionType\": \"Securitization\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/createpool",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"createpool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "issuerId is missing.(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"issuerId is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolname\": \"test poolmar13\",\n    \"assetclass\": \"Residential Real Estate\",\n    \"issuerId\": \"\",\n    \"description\": \"test\",\n    \"issuerName\": \"test\",\n    \"transactionType\": \"Securitization\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/createpool",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"createpool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid issuerId(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 403\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(403);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Please enter a valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Please enter a valid issuerId\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"valid issuerId\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolname\": \"test poolmar13\",\n    \"assetclass\": \"Residential Real Estate\",\n    \"issuerId\": \"@#\",\n    \"description\": \"test\",\n    \"issuerName\": \"test\",\n    \"transactionType\": \"Securitization\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/createpool",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"createpool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assetclass is missing.(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"assetclass is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolname\": \"test poolmar13\",\n    \"assetclass\": \"\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"description\": \"test\",\n    \"issuerName\": \"test\",\n    \"transactionType\": \"Securitization\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/createpool",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"createpool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid assetclass(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 403\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(403);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Please enter a valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Please enter a valid assetclass\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"valid assetclass\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolname\": \"test poolmar13\",\n    \"assetclass\": \"@#$\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"description\": \"test\",\n    \"issuerName\": \"test\",\n    \"transactionType\": \"Securitization\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/createpool",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"createpool"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "poolname is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"poolname is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolname\": \"\",\n    \"assetclass\": \"Residential Real Estate\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"description\": \"test\",\n    \"issuerName\": \"test\",\n    \"transactionType\": \"Securitization\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/createpool",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"createpool"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "downloadlogo",
+			"item": [
+				{
+					"name": "downloadlogo(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Validate Status Code is 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Validate Content-Type is image/png",
+									"pm.test(\"Response is a PNG image\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"image/png\");",
+									"});",
+									"",
+									"// 3. Validate Response is not Empty",
+									"pm.test(\"Response body should not be empty\", function () {",
+									"    pm.expect(pm.response.text().length).to.be.greaterThan(0);",
+									"});",
+									"",
+									"// 4. Validate Content-Disposition Header (if applicable)",
+									"pm.test(\"Response should have Content-Disposition header\", function () {",
+									"    pm.expect(pm.response.headers.has(\"Content-Disposition\")).to.be.true;",
+									"});",
+									"",
+									"// 5. Validate File Name Contains `.png`",
+									"pm.test(\"File name should contain .png\", function () {",
+									"    var contentDisposition = pm.response.headers.get(\"Content-Disposition\");",
+									"    if (contentDisposition) {",
+									"        pm.expect(contentDisposition).to.include(\".png\");",
+									"    }",
+									"});",
+									"",
+									"// 6. Ensure Response Time is Acceptable",
+									"pm.test(\"Response time is within limit\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000); // Adjust as needed",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userid\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadlogo",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadlogo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 401\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(401);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Token Expired,Please log in again to continue.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message.trim()).to.equal(\"Token Expired,Please log in again to continue.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'Token Expired'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Token Expired\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE2NzIwNzksIkVtYWlsSWQiOiJ0ZXN0aXMyQGludGFpbmZ0LmNvbSIsIlJvbGUiOiJJc3N1ZXIiLCJ1c2VySWQiOiIxOTdmNjhhMi1kN2I5LTQyZWUtOGFjMC0xNmMzMTY1NzllNjkiLCJpYXQiOjE3NDE1ODU2Nzl9.TTk2VBEeqAX61ge40sDn_3d4XOYxfJBGhgInLYcE7yY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userid\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadlogo",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadlogo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "userid is missing.(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"userid is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userid\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadlogo",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadlogo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DownloadPoolDoc",
+			"item": [
+				{
+					"name": "DownloadPoolDoc(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Validate Status Code is 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Validate Content-Type is application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+									"pm.test(\"Response is an XLSX file\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\");",
+									"});",
+									"",
+									"// 3. Validate Response is Not Empty",
+									"pm.test(\"Response body should not be empty\", function () {",
+									"    pm.expect(pm.response.text().length).to.be.greaterThan(0);",
+									"});",
+									"",
+									"// 4. Validate Content-Disposition Header (if applicable)",
+									"pm.test(\"Response should have Content-Disposition header\", function () {",
+									"    pm.expect(pm.response.headers.has(\"Content-Disposition\")).to.be.true;",
+									"});",
+									"",
+									"// 5. Validate File Name Contains `.xlsx`",
+									"pm.test(\"File name should contain .xlsx\", function () {",
+									"    var contentDisposition = pm.response.headers.get(\"Content-Disposition\");",
+									"    if (contentDisposition) {",
+									"        pm.expect(contentDisposition).to.include(\".xlsx\");",
+									"    }",
+									"});",
+									"",
+									"// 6. Ensure Response Time is Acceptable",
+									"pm.test(\"Response time is within limit\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000); // Adjust as needed",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/DownloadPoolDoc?documentid=4af46027-dace-4f29-a587-d199a6e6fc0b",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"DownloadPoolDoc"
+							],
+							"query": [
+								{
+									"key": "documentid",
+									"value": "4af46027-dace-4f29-a587-d199a6e6fc0b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 401\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(401);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Token Expired,Please log in again to continue.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message.trim()).to.equal(\"Token Expired,Please log in again to continue.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'Token Expired'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Token Expired\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE2NzIwNzksIkVtYWlsSWQiOiJ0ZXN0aXMyQGludGFpbmZ0LmNvbSIsIlJvbGUiOiJJc3N1ZXIiLCJ1c2VySWQiOiIxOTdmNjhhMi1kN2I5LTQyZWUtOGFjMC0xNmMzMTY1NzllNjkiLCJpYXQiOjE3NDE1ODU2Nzl9.TTk2VBEeqAX61ge40sDn_3d4XOYxfJBGhgInLYcE7yY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/DownloadPoolDoc?documentid=4af46027-dace-4f29-a587-d199a6e6fc0b",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"DownloadPoolDoc"
+							],
+							"query": [
+								{
+									"key": "documentid",
+									"value": "4af46027-dace-4f29-a587-d199a6e6fc0b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Document not available for  abcds(404)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 404\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(404);",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'Document not available'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Document not available\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/DownloadPoolDoc?documentid=abcds",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"DownloadPoolDoc"
+							],
+							"query": [
+								{
+									"key": "documentid",
+									"value": "abcds"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "documentid is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"documentid is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/DownloadPoolDoc?documentid=",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"DownloadPoolDoc"
+							],
+							"query": [
+								{
+									"key": "documentid",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid documentid(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 403\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(403);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Please enter a valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Please enter a valid documentid\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"valid documentid\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/DownloadPoolDoc?documentid=@%23%23",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"DownloadPoolDoc"
+							],
+							"query": [
+								{
+									"key": "documentid",
+									"value": "@%23%23"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "downloadpreviewstdloantape",
+			"item": [
+				{
+					"name": "downloadpreviewstdloantape(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Validate Status Code is 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Validate Content-Type is application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+									"pm.test(\"Response is an XLSX file\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\");",
+									"});",
+									"",
+									"// 3. Validate Response is Not Empty",
+									"pm.test(\"Response body should not be empty\", function () {",
+									"    pm.expect(pm.response.text().length).to.be.greaterThan(0);",
+									"});",
+									"",
+									"// 4. Validate Content-Disposition Header (if applicable)",
+									"pm.test(\"Response should have Content-Disposition header\", function () {",
+									"    pm.expect(pm.response.headers.has(\"Content-Disposition\")).to.be.true;",
+									"});",
+									"",
+									"// 5. Validate File Name Contains `.xlsx`",
+									"pm.test(\"File name should contain .xlsx\", function () {",
+									"    var contentDisposition = pm.response.headers.get(\"Content-Disposition\");",
+									"    if (contentDisposition) {",
+									"        pm.expect(contentDisposition).to.include(\".xlsx\");",
+									"    }",
+									"});",
+									"",
+									"// 6. Ensure Response Time is Acceptable",
+									"pm.test(\"Response time is within limit\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000); // Adjust as needed",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolid\": \"TETR2524790\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"selectedFormat\": \"xlsx\",\n    \"asofdate\": \"01/11/2025\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadpreviewstdloantape",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadpreviewstdloantape"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 401\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(401);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Token Expired,Please log in again to continue.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message.trim()).to.equal(\"Token Expired,Please log in again to continue.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'Token Expired'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Token Expired\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE2NzIwNzksIkVtYWlsSWQiOiJ0ZXN0aXMyQGludGFpbmZ0LmNvbSIsIlJvbGUiOiJJc3N1ZXIiLCJ1c2VySWQiOiIxOTdmNjhhMi1kN2I5LTQyZWUtOGFjMC0xNmMzMTY1NzllNjkiLCJpYXQiOjE3NDE1ODU2Nzl9.TTk2VBEeqAX61ge40sDn_3d4XOYxfJBGhgInLYcE7yY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolid\": \"TETR2524790\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"selectedFormat\": \"xlsx\",\n    \"asofdate\": \"01/11/2025\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadpreviewstdloantape",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadpreviewstdloantape"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "asofdate is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"asofdate is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolid\": \"TETR2524790\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"selectedFormat\": \"xlsx\",\n    \"asofdate\": \"\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadpreviewstdloantape",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadpreviewstdloantape"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid asofdate(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"asofdate is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolid\": \"TETR2524790\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"selectedFormat\": \"xlsx\",\n    \"asofdate\": \"32qw4\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadpreviewstdloantape",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadpreviewstdloantape"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "selectedFormat is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"selectedFormat is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolid\": \"TETR2524790\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"selectedFormat\": \"\",\n    \"asofdate\": \"01/11/2025\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadpreviewstdloantape",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadpreviewstdloantape"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Format should be xlsx or csv(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[\"status code\"]).to.equal(400); // Using bracket notation to handle space",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Format should be xlsx or csv'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message.trim()).to.equal(\"Format should be xlsx or csv\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'xlsx or csv'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"xlsx or csv\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"status code\");",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolid\": \"TETR2524790\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"selectedFormat\": \"aaaf\",\n    \"asofdate\": \"01/11/2025\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadpreviewstdloantape",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadpreviewstdloantape"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "issuerId is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"issuerId is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolid\": \"TETR2524790\",\n    \"issuerId\": \"\",\n    \"selectedFormat\": \"xlsx\",\n    \"asofdate\": \"01/11/2025\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadpreviewstdloantape",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadpreviewstdloantape"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid issuerid(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 403\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(403);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Please enter a valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Please enter a valid issuerId\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"valid issuerId\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolid\": \"TETR2524790\",\n    \"issuerId\": \"@#E\",\n    \"selectedFormat\": \"xlsx\",\n    \"asofdate\": \"01/11/2025\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadpreviewstdloantape",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadpreviewstdloantape"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "poolid is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"poolid is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolid\": \"\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"selectedFormat\": \"xlsx\",\n    \"asofdate\": \"01/11/2025\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadpreviewstdloantape",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadpreviewstdloantape"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loans  Doesnot exist for Poolid (404)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 404\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(404);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Loans  Doesnot exist for Poolid @##$'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message.trim()).to.equal(\"Loans  Doesnot exist for Poolid @##$\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'Doesnot exist for Poolid'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Doesnot exist for Poolid\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"poolid\": \"@##$\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\",\n    \"selectedFormat\": \"xlsx\",\n    \"asofdate\": \"01/11/2025\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/downloadpreviewstdloantape",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"downloadpreviewstdloantape"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "fetchIAToken(Input)",
+			"item": [
+				{
+					"name": "fetchIAToken(200)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/fetchIAToken?IAtoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzI3MTM5NTgsInVzZXJuYW1lIjoiVGVzdCBJbnZlc3RvciIsIm9yZ05hbWUiOiJpbnZlc3RvciIsImlhdCI6MTczMjY3Nzk1OH0.z35OZmg7bE6QYIWP0TfFq1e3jUtxmIS54JGKoMvbZbI",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"fetchIAToken"
+							],
+							"query": [
+								{
+									"key": "IAtoken",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzI3MTM5NTgsInVzZXJuYW1lIjoiVGVzdCBJbnZlc3RvciIsIm9yZ05hbWUiOiJpbnZlc3RvciIsImlhdCI6MTczMjY3Nzk1OH0.z35OZmg7bE6QYIWP0TfFq1e3jUtxmIS54JGKoMvbZbI"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getAItrainedPoolNames",
+			"item": [
+				{
+					"name": "getAItrainedPoolNames(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Validate HTTP Status Code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Validate isSuccess is true",
+									"pm.test(\"Response should indicate success\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.true;",
+									"});",
+									"",
+									"// 3. Validate statuscode in response body is 200",
+									"pm.test(\"Status code in response body should be 200\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(200);",
+									"});",
+									"",
+									"// 4. Validate 'result' key exists",
+									"pm.test(\"Response should contain 'result' key\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"result\");",
+									"});",
+									"",
+									"// 5. Validate 'AITrainedPoolNames' key exists inside 'result'",
+									"pm.test(\"Response should contain 'AITrainedPoolNames' in 'result'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result).to.have.property(\"AITrainedPoolNames\");",
+									"});",
+									"",
+									"// 6. Validate 'AITrainedPoolNames' is an array",
+									"pm.test(\"'AITrainedPoolNames' should be an array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result.AITrainedPoolNames).to.be.an(\"array\");",
+									"});",
+									"",
+									"// 7. Validate 'AITrainedPoolNames' contains expected values",
+									"pm.test(\"'AITrainedPoolNames' should contain 'RES_IMA1' and 'RES_NEA1'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result.AITrainedPoolNames).to.include(\"RES_IMA1\");",
+									"    pm.expect(jsonData.result.AITrainedPoolNames).to.include(\"RES_NEA1\");",
+									"});",
+									"",
+									"// 8. Validate response is JSON format",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"// 9. Ensure response time is acceptable",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getAItrainedPoolNames",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getAItrainedPoolNames"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 401\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(401);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Token Expired,Please log in again to continue.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message.trim()).to.equal(\"Token Expired,Please log in again to continue.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'Token Expired'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Token Expired\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE2NzIwNzksIkVtYWlsSWQiOiJ0ZXN0aXMyQGludGFpbmZ0LmNvbSIsIlJvbGUiOiJJc3N1ZXIiLCJ1c2VySWQiOiIxOTdmNjhhMi1kN2I5LTQyZWUtOGFjMC0xNmMzMTY1NzllNjkiLCJpYXQiOjE3NDE1ODU2Nzl9.TTk2VBEeqAX61ge40sDn_3d4XOYxfJBGhgInLYcE7yY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getAItrainedPoolNames",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getAItrainedPoolNames"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getAllInvestmentsByInvId",
+			"item": [
+				{
+					"name": "getAllInvestmentsByInvId(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Validate HTTP Status Code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Validate isSuccess is true",
+									"pm.test(\"Response should indicate success\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.true;",
+									"});",
+									"",
+									"// 3. Validate statuscode in response body is 200",
+									"pm.test(\"Status code in response body should be 200\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(200);",
+									"});",
+									"",
+									"// 4. Validate 'result' key exists and is an array",
+									"pm.test(\"'result' should be an array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"result\");",
+									"    pm.expect(jsonData.result).to.be.an(\"array\");",
+									"});",
+									"",
+									"// 5. Validate that each object in 'result' contains the expected keys",
+									"pm.test(\"Each item in 'result' should contain required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.result.forEach(item => {",
+									"        pm.expect(item).to.have.property(\"dealid\");",
+									"        pm.expect(item).to.have.property(\"tranchename\");",
+									"        pm.expect(item).to.have.property(\"originalinvestment\");",
+									"        pm.expect(item).to.have.property(\"interestrate\");",
+									"        pm.expect(item).to.have.property(\"interestpaid\");",
+									"        pm.expect(item).to.have.property(\"principalpaid\");",
+									"        pm.expect(item).to.have.property(\"outstandinginvestment\");",
+									"    });",
+									"});",
+									"",
+									"// 6. Validate 'dealid' and 'tranchename' are non-empty",
+									"pm.test(\"Each item in 'result' should have a non-empty 'dealid' and 'tranchename'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.result.forEach(item => {",
+									"        pm.expect(item.dealid).to.not.be.empty;",
+									"        pm.expect(item.tranchename).to.not.be.empty;",
+									"    });",
+									"});",
+									"",
+									"// 7. Validate 'originalinvestment', 'interestpaid', and 'principalpaid' are valid numbers",
+									"pm.test(\"Investment values should be valid numbers\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.result.forEach(item => {",
+									"        pm.expect(parseFloat(item.originalinvestment)).to.not.be.NaN;",
+									"        pm.expect(parseFloat(item.interestpaid)).to.not.be.NaN;",
+									"        pm.expect(parseFloat(item.principalpaid)).to.not.be.NaN;",
+									"    });",
+									"});",
+									"",
+									"",
+									"",
+									"// 9. Validate response is JSON format",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"// 10. Ensure response time is acceptable",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getAllInvestmentsByInvId?investorid=39acd982-bc47-467d-9f84-2280dff1ff6c&mailid=testIN@intainft.com",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getAllInvestmentsByInvId"
+							],
+							"query": [
+								{
+									"key": "investorid",
+									"value": "39acd982-bc47-467d-9f84-2280dff1ff6c"
+								},
+								{
+									"key": "mailid",
+									"value": "testIN@intainft.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 401\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(401);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Token Expired,Please log in again to continue.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message.trim()).to.equal(\"Token Expired,Please log in again to continue.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'Token Expired'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Token Expired\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE2NzIwNzksIkVtYWlsSWQiOiJ0ZXN0aXMyQGludGFpbmZ0LmNvbSIsIlJvbGUiOiJJc3N1ZXIiLCJ1c2VySWQiOiIxOTdmNjhhMi1kN2I5LTQyZWUtOGFjMC0xNmMzMTY1NzllNjkiLCJpYXQiOjE3NDE1ODU2Nzl9.TTk2VBEeqAX61ge40sDn_3d4XOYxfJBGhgInLYcE7yY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getAllInvestmentsByInvId?investorid=39acd982-bc47-467d-9f84-2280dff1ff6c&mailid=testIN@intainft.com",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getAllInvestmentsByInvId"
+							],
+							"query": [
+								{
+									"key": "investorid",
+									"value": "39acd982-bc47-467d-9f84-2280dff1ff6c"
+								},
+								{
+									"key": "mailid",
+									"value": "testIN@intainft.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mailid is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"mailid is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getAllInvestmentsByInvId?investorid=39acd982-bc47-467d-9f84-2280dff1ff6c&mailid=",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getAllInvestmentsByInvId"
+							],
+							"query": [
+								{
+									"key": "investorid",
+									"value": "39acd982-bc47-467d-9f84-2280dff1ff6c"
+								},
+								{
+									"key": "mailid",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid mailid(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 403\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(403);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Please enter a valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Please enter a valid mailid\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"valid mailid\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getAllInvestmentsByInvId?investorid=39acd982-bc47-467d-9f84-2280dff1ff6c&mailid=abcs",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getAllInvestmentsByInvId"
+							],
+							"query": [
+								{
+									"key": "investorid",
+									"value": "39acd982-bc47-467d-9f84-2280dff1ff6c"
+								},
+								{
+									"key": "mailid",
+									"value": "abcs"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "investorid is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"investorid is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getAllInvestmentsByInvId?investorid=&mailid=testIN@intainft.com",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getAllInvestmentsByInvId"
+							],
+							"query": [
+								{
+									"key": "investorid",
+									"value": ""
+								},
+								{
+									"key": "mailid",
+									"value": "testIN@intainft.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid investorid(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 403\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(403);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Please enter a valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Please enter a valid investorid\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"valid investorid\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getAllInvestmentsByInvId?investorid=@%23&mailid=testIN@intainft.com",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getAllInvestmentsByInvId"
+							],
+							"query": [
+								{
+									"key": "investorid",
+									"value": "@%23"
+								},
+								{
+									"key": "mailid",
+									"value": "testIN@intainft.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getallloans",
+			"item": [
+				{
+					"name": "getallloans(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Validate HTTP Status Code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Validate isSuccess is true",
+									"pm.test(\"Response should indicate success\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.true;",
+									"});",
+									"",
+									"// 3. Validate statuscode in response body is 200",
+									"pm.test(\"Status code in response body should be 200\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(200);",
+									"});",
+									"",
+									"// 4. Validate 'message' exists and has correct value",
+									"pm.test(\"Message should be 'Data successfully streamed'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"message\", \"Data successfully streamed\");",
+									"});",
+									"",
+									"// 5. Validate 'result' key exists and is an array",
+									"pm.test(\"'result' should be an array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"result\");",
+									"    pm.expect(jsonData.result).to.be.an(\"array\").that.is.not.empty;",
+									"});",
+									"",
+									"",
+									"// 7. Validate 'Loan ID' is not empty",
+									"pm.test(\"Each 'Loan ID' should not be empty\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.result.forEach((item, index) => {",
+									"        pm.expect(item[\"Loan ID\"], `Missing Loan ID at index ${index}`).to.be.a('string').and.to.not.be.empty;",
+									"    });",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									"// 10. Validate response is in JSON format",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"// 11. Validate response time (increase limit for high latency)",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(4000); // Increased from 2000 to 4000",
+									"});",
+									"",
+									"// 12. Validate 'Loan Status' is either 'Current' or 'Defaulted'",
+									"pm.test(\"'Loan Status' should be either 'Current' or 'Defaulted'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.result.forEach((item, index) => {",
+									"        pm.expect([\"Current\", \"Defaulted\"], `Unexpected 'Loan Status' at index ${index}`).to.include(item[\"Loan Status\"]);",
+									"    });",
+									"});",
+									"",
+									"// 13. Validate 'State' field contains valid two-letter codes (handle missing fields)",
+									"pm.test(\"State should contain valid two-letter codes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.result.forEach((item, index) => {",
+									"        if (item.State) {",
+									"            pm.expect(item.State, `Invalid 'State' format at index ${index}`).to.match(/^[A-Z]{2}$/);",
+									"        }",
+									"    });",
+									"});",
+									"",
+									"// 14. Validate 'Borrower Name' is not empty (handle missing fields)",
+									"pm.test(\"'Borrower Name' should not be empty\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.result.forEach((item, index) => {",
+									"        if (item[\"Borrower Name\"]) {",
+									"            pm.expect(item[\"Borrower Name\"], `Missing 'Borrower Name' at index ${index}`).to.be.a('string').and.to.not.be.empty;",
+									"        }",
+									"    });",
+									"});",
+									"",
+									"// 15. Validate 'Created Date' is in correct format",
+									"pm.test(\"'Created Date' should be in YYYY-MM-DD format\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.result.forEach((item, index) => {",
+									"        pm.expect(item[\"Created Date\"], `Invalid 'Created Date' at index ${index}`).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getallloans?issuerId=197f68a2-d7b9-42ee-8ac0-16c316579e69&pageSize=30",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getallloans"
+							],
+							"query": [
+								{
+									"key": "issuerId",
+									"value": "197f68a2-d7b9-42ee-8ac0-16c316579e69"
+								},
+								{
+									"key": "lastSeenId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 401\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(401);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Token Expired,Please log in again to continue.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message.trim()).to.equal(\"Token Expired,Please log in again to continue.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'Token Expired'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Token Expired\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE2NzIwNzksIkVtYWlsSWQiOiJ0ZXN0aXMyQGludGFpbmZ0LmNvbSIsIlJvbGUiOiJJc3N1ZXIiLCJ1c2VySWQiOiIxOTdmNjhhMi1kN2I5LTQyZWUtOGFjMC0xNmMzMTY1NzllNjkiLCJpYXQiOjE3NDE1ODU2Nzl9.TTk2VBEeqAX61ge40sDn_3d4XOYxfJBGhgInLYcE7yY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getallloans?issuerId=197f68a2-d7b9-42ee-8ac0-16c316579e69&pageSize=30",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getallloans"
+							],
+							"query": [
+								{
+									"key": "issuerId",
+									"value": "197f68a2-d7b9-42ee-8ac0-16c316579e69"
+								},
+								{
+									"key": "lastSeenId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "issuerId is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"issuerId is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getallloans?issuerId=&pageSize=30",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getallloans"
+							],
+							"query": [
+								{
+									"key": "issuerId",
+									"value": ""
+								},
+								{
+									"key": "lastSeenId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pageSize is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"pageSize is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getallloans?issuerId=197f68a2-d7b9-42ee-8ac0-16c316579e69&pageSize=",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getallloans"
+							],
+							"query": [
+								{
+									"key": "lastSeenId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "issuerId",
+									"value": "197f68a2-d7b9-42ee-8ac0-16c316579e69"
+								},
+								{
+									"key": "pageSize",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid pagesize(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 403\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(403);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Please enter a valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Please enter a valid pagesize\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"valid mailid\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getallloans?issuerId=197f68a2-d7b9-42ee-8ac0-16c316579e69&pageSize=@%",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getallloans"
+							],
+							"query": [
+								{
+									"key": "lastSeenId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "issuerId",
+									"value": "197f68a2-d7b9-42ee-8ac0-16c316579e69"
+								},
+								{
+									"key": "pageSize",
+									"value": "@%"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getallpoolsbyIssuerId",
+			"item": [
+				{
+					"name": "getallpoolsbyIssuerId(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Validate HTTP Status Code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Validate isSuccess is true",
+									"pm.test(\"Response should indicate success\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.true;",
+									"});",
+									"",
+									"// 3. Validate 'result' contains 'pooldetails' as an array",
+									"pm.test(\"Response contains 'pooldetails' array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.result).to.have.property(\"pooldetails\").that.is.an(\"array\");",
+									"    pm.expect(jsonData.result.pooldetails.length).to.be.greaterThan(0);",
+									"});",
+									"",
+									"// 4. Validate each item in 'pooldetails' contains required keys",
+									"pm.test(\"Each item in 'pooldetails' contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var requiredKeys = [",
+									"        \"_id\", \"uniqueID\", \"poolID\", \"poolname\", \"issuerId\", \"assetclass\", \"status\", ",
+									"        \"numberofloans\", \"setupdate\", \"originalbalance\", \"currentbalance\", \"transactionType\"",
+									"    ];",
+									"",
+									"    jsonData.result.pooldetails.forEach(function (item, index) {",
+									"        requiredKeys.forEach(function (key) {",
+									"            pm.expect(item, `Item at index ${index} is missing key: ${key}`).to.have.property(key);",
+									"        });",
+									"    });",
+									"});",
+									"",
+									"// 5. Validate 'originalbalance' is a valid number",
+									"pm.test(\"'originalbalance' should be a valid number\", function () {",
+									"    var jsonData = pm.response.json();",
+									"",
+									"    jsonData.result.pooldetails.forEach(function (item, index) {",
+									"        if (item.hasOwnProperty(\"originalbalance\")) {",
+									"            let originalBalance = Number(item[\"originalbalance\"]);",
+									"            pm.expect(originalBalance, `Invalid 'originalbalance' at index ${index}: ${item[\"originalbalance\"]}`).to.be.a(\"number\").and.not.NaN;",
+									"        } else {",
+									"            pm.expect.fail(`Missing 'originalbalance' at index ${index}`);",
+									"        }",
+									"    });",
+									"});",
+									"",
+									"// 6. Validate 'currentbalance' is a valid number",
+									"pm.test(\"'currentbalance' should be a valid number\", function () {",
+									"    var jsonData = pm.response.json();",
+									"",
+									"    jsonData.result.pooldetails.forEach(function (item, index) {",
+									"        if (item.hasOwnProperty(\"currentbalance\")) {",
+									"            let currentBalance = Number(item[\"currentbalance\"]);",
+									"            pm.expect(currentBalance, `Invalid 'currentbalance' at index ${index}: ${item[\"currentbalance\"]}`).to.be.a(\"number\").and.not.NaN;",
+									"        } else {",
+									"            pm.expect.fail(`Missing 'currentbalance' at index ${index}`);",
+									"        }",
+									"    });",
+									"});",
+									"",
+									"// 7. Validate 'status' field contains only allowed values",
+									"pm.test(\"'status' field should have a valid value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var allowedStatusValues = [\"Created\", \"Pending\"];",
+									"",
+									"    jsonData.result.pooldetails.forEach(function (item, index) {",
+									"        pm.expect(item.status, `Invalid status at index ${index}: ${item.status}`).to.be.oneOf(allowedStatusValues);",
+									"    });",
+									"});",
+									"",
+									"// 8. Validate 'transactionType' field contains only expected values",
+									"pm.test(\"'transactionType' should have a valid value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var allowedTransactionTypes = [\"Whole Loan Sale\", \"Securitization\"];",
+									"",
+									"    jsonData.result.pooldetails.forEach(function (item, index) {",
+									"        pm.expect(item.transactionType, `Invalid transactionType at index ${index}: ${item.transactionType}`).to.be.oneOf(allowedTransactionTypes);",
+									"    });",
+									"});",
+									"",
+									"// 9. Validate 'setupdate' follows the correct date format (YYYY-MM-DD)",
+									"pm.test(\"'setupdate' should be in correct date format (YYYY-MM-DD)\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var dateRegex = /^\\d{4}-\\d{2}-\\d{2}$/;",
+									"",
+									"    jsonData.result.pooldetails.forEach(function (item, index) {",
+									"        pm.expect(item.setupdate, `Invalid date format for 'setupdate' at index ${index}: ${item.setupdate}`).to.match(dateRegex);",
+									"    });",
+									"});",
+									"",
+									"// 10. Validate 'loanids' is a string (or empty)",
+									"pm.test(\"'loanids' should be a string or empty\", function () {",
+									"    var jsonData = pm.response.json();",
+									"",
+									"    jsonData.result.pooldetails.forEach(function (item, index) {",
+									"        pm.expect(item.loanids, `Invalid 'loanids' at index ${index}: ${item.loanids}`).to.be.a(\"string\");",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getallpoolsbyIssuerId?issuerId=9e6753ce-ee39-4424-a9ee-b1096a71b01e&mailid=testIS5@intainft.com",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getallpoolsbyIssuerId"
+							],
+							"query": [
+								{
+									"key": "issuerId",
+									"value": "9e6753ce-ee39-4424-a9ee-b1096a71b01e"
+								},
+								{
+									"key": "mailid",
+									"value": "testIS5@intainft.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 401\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(401);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Token Expired,Please log in again to continue.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message.trim()).to.equal(\"Token Expired,Please log in again to continue.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'Token Expired'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Token Expired\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getallpoolsbyIssuerId?issuerId=9e6753ce-ee39-4424-a9ee-b1096a71b01e&mailid=testIS5@intainft.com",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getallpoolsbyIssuerId"
+							],
+							"query": [
+								{
+									"key": "issuerId",
+									"value": "9e6753ce-ee39-4424-a9ee-b1096a71b01e"
+								},
+								{
+									"key": "mailid",
+									"value": "testIS5@intainft.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing mailid(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"mailid is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getallpoolsbyIssuerId?issuerId=9e6753ce-ee39-4424-a9ee-b1096a71b01e&mailid=",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getallpoolsbyIssuerId"
+							],
+							"query": [
+								{
+									"key": "issuerId",
+									"value": "9e6753ce-ee39-4424-a9ee-b1096a71b01e"
+								},
+								{
+									"key": "mailid",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid mailid(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 403\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(403);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Please enter a valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Please enter a valid mailid\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"valid mailid\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getallpoolsbyIssuerId?issuerId=9e6753ce-ee39-4424-a9ee-b1096a71b01e&mailid=fvdsf",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getallpoolsbyIssuerId"
+							],
+							"query": [
+								{
+									"key": "issuerId",
+									"value": "9e6753ce-ee39-4424-a9ee-b1096a71b01e"
+								},
+								{
+									"key": "mailid",
+									"value": "fvdsf"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "issuerId is missing(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 400\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'poolname is missing.'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"issuerId is missing.\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'missing'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"missing\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getallpoolsbyIssuerId?issuerId=&mailid=testIS5@intainft.com",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getallpoolsbyIssuerId"
+							],
+							"query": [
+								{
+									"key": "issuerId",
+									"value": ""
+								},
+								{
+									"key": "mailid",
+									"value": "testIS5@intainft.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid issuerId(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Response should indicate failure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Status code in response body should be 403\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statuscode).to.equal(403);",
+									"});",
+									"",
+									"pm.test(\"Message should be 'Please enter a valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.equal(\"Please enter a valid issuerId\");",
+									"});",
+									"",
+									"pm.test(\"Message should contain 'valid assetclass'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"valid issuerId\");",
+									"});",
+									"",
+									"pm.test(\"Response is valid JSON\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response contains required keys\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"isSuccess\");",
+									"    pm.expect(jsonData).to.have.property(\"statuscode\");",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"});",
+									"",
+									"pm.test(\"Response time is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/getallpoolsbyIssuerId?issuerId=@%23%23&mailid=testIS5@intainft.com",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"getallpoolsbyIssuerId"
+							],
+							"query": [
+								{
+									"key": "issuerId",
+									"value": "@%23%23"
+								},
+								{
+									"key": "mailid",
+									"value": "testIS5@intainft.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GetAllUsersByUserRole",
+			"item": [
+				{
+					"name": "/GetAllUsersByUserRole(200)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/GetAllUsersByUserRole",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"GetAllUsersByUserRole"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Validate HTTP Status Code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Validate `isSuccess` is true",
+									"pm.test(\"Response should indicate success\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.isSuccess).to.be.true;",
+									"});",
+									"",
+									"// 3. Validate `result` contains expected role categories",
+									"pm.test(\"Response contains expected role categories\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var expectedCategories = [\"Underwriter\", \"Issuer\", \"Investor\", \"Rating Agency\", \"Servicer\", \"Verification\", \"Paying Agent\", \"Admin\", \"Originator\"];",
+									"",
+									"    expectedCategories.forEach(category => {",
+									"        pm.expect(jsonData.result, `Missing category: ${category}`).to.have.property(category).that.is.an(\"array\");",
+									"    });",
+									"});",
+									"",
+									"// 4. Validate each category's objects contain required fields",
+									"pm.test(\"Each user in all categories has required fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var requiredFields = [\"UserRole\", \"UserName\", \"UserId\", \"EmailAddress\", \"UserType\", \"KycVerifiedStatus\"];",
+									"",
+									"    Object.keys(jsonData.result).forEach(category => {",
+									"        jsonData.result[category].forEach((user, index) => {",
+									"            requiredFields.forEach(field => {",
+									"                pm.expect(user, `Category: ${category}, Item Index: ${index} is missing field: ${field}`).to.have.property(field);",
+									"            });",
+									"        });",
+									"    });",
+									"});",
+									"",
+									"// 5. Validate `UserId` is a valid UUID format",
+									"pm.test(\"Each user has a valid UUID `UserId`\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;",
+									"",
+									"    Object.keys(jsonData.result).forEach(category => {",
+									"        jsonData.result[category].forEach((user, index) => {",
+									"            pm.expect(user.UserId, `Invalid UUID format in category: ${category}, at index: ${index}`).to.match(uuidRegex);",
+									"        });",
+									"    });",
+									"});",
+									"",
+									"// 6. Validate `EmailAddress` field contains valid email format",
+									"pm.test(\"Each user has a valid email address\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;",
+									"",
+									"    Object.keys(jsonData.result).forEach(category => {",
+									"        jsonData.result[category].forEach((user, index) => {",
+									"            pm.expect(user.EmailAddress, `Invalid Email Address in category: ${category}, at index: ${index}`).to.match(emailRegex);",
+									"        });",
+									"    });",
+									"});",
+									"",
+									"// 7. Validate `KycVerifiedStatus` has only allowed values",
+									"pm.test(\"Each user has a valid `KycVerifiedStatus`\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var allowedKycStatuses = [\"Verified\", \"Pending\"];",
+									"",
+									"    Object.keys(jsonData.result).forEach(category => {",
+									"        jsonData.result[category].forEach((user, index) => {",
+									"            pm.expect(user.KycVerifiedStatus, `Invalid KycVerifiedStatus in category: ${category}, at index: ${index}`).to.be.oneOf(allowedKycStatuses);",
+									"        });",
+									"    });",
+									"});",
+									"",
+									"// 8. Validate `UserRole` is correctly assigned in all categories",
+									"pm.test(\"Each user has a valid `UserRole`\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var validRoles = [\"Underwriter\", \"Issuer\", \"Investor\", \"Rating Agency\", \"Servicer\", \"Verification\", \"Paying Agent\", \"Admin\", \"Originator\"];",
+									"",
+									"    Object.keys(jsonData.result).forEach(category => {",
+									"        jsonData.result[category].forEach((user, index) => {",
+									"            pm.expect(user.UserRole, `Invalid UserRole in category: ${category}, at index: ${index}`).to.equal(category);",
+									"        });",
+									"    });",
+									"});",
+									"",
+									"// 9. Validate `UserType` field is either valid or empty",
+									"pm.test(\"Each user has a valid `UserType`\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    jsonData.result[\"Underwriter\"].concat(",
+									"        jsonData.result[\"Issuer\"], ",
+									"        jsonData.result[\"Investor\"], ",
+									"        jsonData.result[\"Rating Agency\"], ",
+									"        jsonData.result[\"Servicer\"], ",
+									"        jsonData.result[\"Verification\"], ",
+									"        jsonData.result[\"Paying Agent\"], ",
+									"        jsonData.result[\"Admin\"], ",
+									"        jsonData.result[\"Originator\"]",
+									"    ).forEach((user, index) => {",
+									"        pm.expect(user.UserType, `Invalid UserType at index ${index}`).to.be.a(\"string\");",
+									"    });",
+									"});",
+									"",
+									"// 10. Ensure unknown categories are flagged",
+									"pm.test(\"Check for unexpected categories\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var knownCategories = [\"Underwriter\", \"Issuer\", \"Investor\", \"Rating Agency\", \"Servicer\", \"Verification\", \"Paying Agent\", \"Admin\", \"Originator\"];",
+									"",
+									"    Object.keys(jsonData.result).forEach(category => {",
+									"        pm.expect(knownCategories, `Unexpected category found: ${category}`).to.include(category);",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE2NzIwNzksIkVtYWlsSWQiOiJ0ZXN0aXMyQGludGFpbmZ0LmNvbSIsIlJvbGUiOiJJc3N1ZXIiLCJ1c2VySWQiOiIxOTdmNjhhMi1kN2I5LTQyZWUtOGFjMC0xNmMzMTY1NzllNjkiLCJpYXQiOjE3NDE1ODU2Nzl9.TTk2VBEeqAX61ge40sDn_3d4XOYxfJBGhgInLYcE7yY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nodeapp.imtest.intainmarkets.us/GetAllUsersByUserRole",
+							"protocol": "https",
+							"host": [
+								"nodeapp",
+								"imtest",
+								"intainmarkets",
+								"us"
+							],
+							"path": [
+								"GetAllUsersByUserRole"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE5MzE3MTgsIkVtYWlsSWQiOiJ0ZXN0aXMyQGludGFpbmZ0LmNvbSIsIlJvbGUiOiJJc3N1ZXIiLCJ1c2VySWQiOiIxOTdmNjhhMi1kN2I5LTQyZWUtOGFjMC0xNmMzMTY1NzllNjkiLCJpYXQiOjE3NDE4NDUzMTh9.jjYviGgXTFYX4LwZRabdxQfpXNqnQ3x1U5TH89LU2ow",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

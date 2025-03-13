@@ -1,0 +1,37 @@
+name: API Tests with Newman
+
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run API Tests and Generate CSV Report
+        run: |
+          newman run tests/postman_collection.json \
+            --reporters cli,csv \
+            --reporter-csv-export results.csv
+
+      - name: Upload CSV Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: newman-csv-report
+          path: results.csv
