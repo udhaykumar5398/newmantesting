@@ -31,7 +31,7 @@ jobs:
             --reporter-csv-export results.csv
 
       - name: Upload CSV Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # Updated to v4
         with:
           name: newman-csv-report
           path: results.csv
