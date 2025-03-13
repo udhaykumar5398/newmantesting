@@ -2513,38 +2513,6 @@
 			]
 		},
 		{
-			"name": "fetchIAToken(Input)",
-			"item": [
-				{
-					"name": "fetchIAToken(200)",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://nodeapp.imtest.intainmarkets.us/fetchIAToken?IAtoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzI3MTM5NTgsInVzZXJuYW1lIjoiVGVzdCBJbnZlc3RvciIsIm9yZ05hbWUiOiJpbnZlc3RvciIsImlhdCI6MTczMjY3Nzk1OH0.z35OZmg7bE6QYIWP0TfFq1e3jUtxmIS54JGKoMvbZbI",
-							"protocol": "https",
-							"host": [
-								"nodeapp",
-								"imtest",
-								"intainmarkets",
-								"us"
-							],
-							"path": [
-								"fetchIAToken"
-							],
-							"query": [
-								{
-									"key": "IAtoken",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzI3MTM5NTgsInVzZXJuYW1lIjoiVGVzdCBJbnZlc3RvciIsIm9yZ05hbWUiOiJpbnZlc3RvciIsImlhdCI6MTczMjY3Nzk1OH0.z35OZmg7bE6QYIWP0TfFq1e3jUtxmIS54JGKoMvbZbI"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "getAItrainedPoolNames",
 			"item": [
 				{
