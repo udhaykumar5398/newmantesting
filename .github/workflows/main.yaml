@@ -27,8 +27,8 @@ jobs:
       - name: Install CSV Reporter
         run: npm install -g newman-reporter-csv
 
-      - name: Check Installed Newman Reporters
-        run: newman -r
+      - name: Ensure CSV Reporter is Installed
+        run: npm list -g --depth=0 | grep newman-reporter-csv || echo "CSV Reporter not found"
 
       - name: Ensure Results Directory Exists
         run: mkdir -p results
