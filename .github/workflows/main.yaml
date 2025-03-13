@@ -27,14 +27,23 @@ jobs:
       - name: Install CSV Reporter
         run: npm install -g newman-reporter-csv
 
+      - name: Check Installed Newman Reporters
+        run: newman -r
+
+      - name: Ensure Results Directory Exists
+        run: mkdir -p results
+
       - name: Run API Tests and Generate CSV Report
         run: |
           newman run tests/postman_collection.json \
-            -r cli,csv \
-            --reporter-csv-export results.csv
+            --reporters cli,csv \
+            --reporter-csv-export results/results.csv
+
+      - name: Debug - List Files in Directory
+        run: ls -R
 
       - name: Upload CSV Report
-        uses: actions/upload-artifact@v4  # Updated to v4
+        uses: actions/upload-artifact@v4
         with:
           name: newman-csv-report
-          path: results.csv
+          path: results/results.csv
