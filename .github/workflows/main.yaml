@@ -35,7 +35,7 @@ jobs:
 
       - name: Run API Tests, Capture Logs, and Generate CSV Report
         run: |
-          newman run tests/postman_collection.json \
+          newman run tests/IM Postman Automation issuerlogin.postman_collection.json \
             --reporters cli,csv \
             --reporter-csv-export results/results.csv | tee results/newman_log.txt
 
