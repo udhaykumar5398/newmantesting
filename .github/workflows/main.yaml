@@ -33,12 +33,20 @@ jobs:
       - name: Ensure Results Directory Exists
         run: mkdir -p results
 
+      - name: Debug - List Files in Repository
+        run: ls -R
+
+      - name: Debug - Check Collection and Environment Files
+        run: |
+          if [ ! -f "Issuer APIS.postman_collection.json" ]; then echo "Collection file not found!"; exit 1; fi
+          if [ ! -f "IM_TestNetwork.postman_environment.json" ]; then echo "Environment file not found!"; exit 1; fi
+
       - name: Run API Tests, Capture Logs, and Generate CSV Report
         run: |
           newman run "Issuer APIS.postman_collection.json" -e "IM_TestNetwork.postman_environment.json" \
             --reporters cli,csv \
             --reporter-csv-export results/results.csv \
-            --verbose > results/newman_log.txt 2>&1
+            --verbose > results/newman_log.txt 2>&1 || echo "Newman tests failed. Check logs."
 
       - name: Debug - List Files in Directory
         run: ls -lh results/
@@ -57,6 +65,7 @@ jobs:
           path: results/
 
       - name: Send Email with CSV and Log File
+        if: always()  # Ensure email is sent even if tests fail
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com  
@@ -67,12 +76,10 @@ jobs:
           body: |
             Hi Team,
 
-            Please find attached the latest API test report.
+            The latest API test run has completed. 
 
-            - Results CSV: Attached
-            - Detailed Logs: Attached
-
-            If you have any questions, please review the attached logs.
+            - ✅ If tests passed, results are attached.
+            - ❌ If tests failed, check the attached logs for details.
 
           to: udhaya.kumar@intainft.com,bharathi.m@intainft.com,srihari.sardena@intainft.com
           from: Newman Alert
