@@ -33,30 +33,14 @@ jobs:
       - name: Ensure Results Directory Exists
         run: mkdir -p results
 
-      - name: Debug - List Files in Repository
-        run: ls -R
-
-      - name: Debug - Check Collection and Environment Files
-        run: |
-          if [ ! -f "Issuer APIS.postman_collection.json" ]; then echo "Collection file not found!"; exit 1; fi
-          if [ ! -f "IM_TestNetwork.postman_environment.json" ]; then echo "Environment file not found!"; exit 1; fi
-
       - name: Run API Tests, Capture Logs, and Generate CSV Report
         run: |
-          newman run "Issuer APIS.postman_collection.json" -e "IM_TestNetwork.postman_environment.json" \
+          newman run tests/postman_collection.json \
             --reporters cli,csv \
-            --reporter-csv-export results/results.csv \
-            --verbose > results/newman_log.txt 2>&1 || echo "Newman tests failed. Check logs."
+            --reporter-csv-export results/results.csv | tee results/newman_log.txt
 
       - name: Debug - List Files in Directory
-        run: ls -lh results/
-
-      - name: Debug - Check File Content
-        run: |
-          echo "CSV File Content:"
-          cat results/results.csv || echo "CSV file is empty!"
-          echo "Log File Content:"
-          cat results/newman_log.txt || echo "Log file is empty!"
+        run: ls -R results
 
       - name: Upload Test Reports (CSV & Logs)
         uses: actions/upload-artifact@v4
@@ -65,7 +49,6 @@ jobs:
           path: results/
 
       - name: Send Email with CSV and Log File
-        if: always()  # Ensure email is sent even if tests fail
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com  
@@ -76,11 +59,9 @@ jobs:
           body: |
             Hi Team,
 
-            The latest API test run has completed. 
+            Please find attached the latest API test report below:
 
-            - ✅ If tests passed, results are attached.
-            - ❌ If tests failed, check the attached logs for details.
-
-          to: udhaya.kumar@intainft.com,bharathi.m@intainft.com,srihari.sardena@intainft.com
+        
+          to: udhaya.kumar@intainft.com,thutta.raju@intainft.com
           from: Newman Alert
           attachments: results/results.csv, results/newman_log.txt
