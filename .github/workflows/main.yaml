@@ -35,9 +35,10 @@ jobs:
 
       - name: Run API Tests, Capture Logs, and Generate CSV Report
         run: |
-          newman run tests/postman_collection.json \
+          newman run "Issuer APIS.postman_collection.json" -e "IM_TestNetwork.postman_environment.json" \
             --reporters cli,csv \
-            --reporter-csv-export results/results.csv | tee results/newman_log.txt
+            --reporter-csv-export results/results.csv \
+            --verbose | tee results/newman_log.txt
 
       - name: Debug - List Files in Directory
         run: ls -R results
@@ -59,9 +60,8 @@ jobs:
           body: |
             Hi Team,
 
-            Please find attached the latest API test report below:
+            Please find attached the latest API test report below.
 
-        
-          to: udhaya.kumar@intainft.com,bharathi.m@intainft.com,srihari.sardena@intainft.com
+          to: udhaya.kumar@intainft.com,thutta.raju@intainft.com
           from: Newman Alert
           attachments: results/results.csv, results/newman_log.txt

@@ -1,0 +1,979 @@
+{
+	"info": {
+		"_postman_id": "812ff5c4-2c98-4e2b-91ee-49b9ba7d7690",
+		"name": "Issuer APIS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40381660",
+		"_collection_link": "https://galactic-meteor-144663.postman.co/workspace/Team-Workspace~88e68aff-35fe-4b8e-804d-abda55e3fd1d/collection/40381660-812ff5c4-2c98-4e2b-91ee-49b9ba7d7690?action=share&source=collection_link&creator=40381660"
+	},
+	"item": [
+		{
+			"name": "addPoolDocument",
+			"item": [
+				{
+					"name": "addPoolDocument(200)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "testing",
+									"type": "text"
+								},
+								{
+									"key": "documentname",
+									"value": "test doc",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/home/rohityadav/Downloads/628 (1).pdf"
+								},
+								{
+									"key": "issuerid",
+									"value": "f7ac8cca-cf9b-43c0-805a-b413d6c5e27f",
+									"type": "text"
+								},
+								{
+									"key": "poolid",
+									"value": "TETR2524818",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/addPoolDocument",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"addPoolDocument"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid description(403)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "@#$%$#",
+									"type": "text"
+								},
+								{
+									"key": "documentname",
+									"value": "test doc",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/home/rohityadav/Downloads/628 (1).pdf"
+								},
+								{
+									"key": "issuerid",
+									"value": "f7ac8cca-cf9b-43c0-805a-b413d6c5e27f",
+									"type": "text"
+								},
+								{
+									"key": "poolid",
+									"value": "TETR2524818",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/addPoolDocument",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"addPoolDocument"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing description(400)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "documentname",
+									"value": "test doc",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/home/rohityadav/Downloads/628 (1).pdf"
+								},
+								{
+									"key": "issuerid",
+									"value": "f7ac8cca-cf9b-43c0-805a-b413d6c5e27f",
+									"type": "text"
+								},
+								{
+									"key": "poolid",
+									"value": "TETR2524818",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/addPoolDocument",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"addPoolDocument"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Document name(403)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "testing",
+									"type": "text"
+								},
+								{
+									"key": "documentname",
+									"value": "@#$%^%$",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/home/rohityadav/Downloads/628 (1).pdf"
+								},
+								{
+									"key": "issuerid",
+									"value": "f7ac8cca-cf9b-43c0-805a-b413d6c5e27f",
+									"type": "text"
+								},
+								{
+									"key": "poolid",
+									"value": "TETR2524818",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/addPoolDocument",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"addPoolDocument"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing document name(400)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "testing",
+									"type": "text"
+								},
+								{
+									"key": "documentname",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/home/rohityadav/Downloads/628 (1).pdf"
+								},
+								{
+									"key": "issuerid",
+									"value": "f7ac8cca-cf9b-43c0-805a-b413d6c5e27f",
+									"type": "text"
+								},
+								{
+									"key": "poolid",
+									"value": "TETR2524818",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/addPoolDocument",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"addPoolDocument"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "addPoolDocument(200) Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "description",
+											"value": "testing",
+											"type": "text"
+										},
+										{
+											"key": "documentname",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "filename",
+											"type": "file",
+											"src": "/home/rohityadav/Downloads/628 (1).pdf"
+										},
+										{
+											"key": "issuerid",
+											"value": "f7ac8cca-cf9b-43c0-805a-b413d6c5e27f",
+											"type": "text"
+										},
+										{
+											"key": "poolid",
+											"value": "TETR2524818",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/addPoolDocument",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"addPoolDocument"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 18 Mar 2025 09:33:17 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "75"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Content-Security-Policy",
+									"value": "script-src 'nonce-2J3luXQfpiL6S+CQMNPdng==';"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "My Server"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4b-ELsx7rEKf7nfcQw5M+4NT1r4pTc\""
+								},
+								{
+									"key": "Server",
+									"value": "MyServer"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statuscode\": 200,\n    \"isSuccess\": true,\n    \"message\": \"Document Added Successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Invalid issuer id(403)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "testing",
+									"type": "text"
+								},
+								{
+									"key": "documentname",
+									"value": "test doc",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/home/rohityadav/Downloads/628 (1).pdf"
+								},
+								{
+									"key": "issuerid",
+									"value": "@#$%",
+									"type": "text"
+								},
+								{
+									"key": "poolid",
+									"value": "TETR2524818",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/addPoolDocument",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"addPoolDocument"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "addPoolDocument(200) Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "description",
+											"value": "testing",
+											"type": "text"
+										},
+										{
+											"key": "documentname",
+											"value": "test doc",
+											"type": "text"
+										},
+										{
+											"key": "filename",
+											"type": "file",
+											"src": "/home/rohityadav/Downloads/628 (1).pdf"
+										},
+										{
+											"key": "issuerid",
+											"value": "@#$%",
+											"type": "text"
+										},
+										{
+											"key": "poolid",
+											"value": "TETR2524818",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/addPoolDocument",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"addPoolDocument"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 18 Mar 2025 09:28:28 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "75"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Content-Security-Policy",
+									"value": "script-src 'nonce-Xen8dC73wXASrFJwwLQG2g==';"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "My Server"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4b-ELsx7rEKf7nfcQw5M+4NT1r4pTc\""
+								},
+								{
+									"key": "Server",
+									"value": "MyServer"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statuscode\": 200,\n    \"isSuccess\": true,\n    \"message\": \"Document Added Successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Missing issuer id(400)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "testing",
+									"type": "text"
+								},
+								{
+									"key": "documentname",
+									"value": "test doc",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/home/rohityadav/Downloads/628 (1).pdf"
+								},
+								{
+									"key": "issuerid",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "poolid",
+									"value": "TETR2524818",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/addPoolDocument",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"addPoolDocument"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "addPoolDocument(200) Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "description",
+											"value": "testing",
+											"type": "text"
+										},
+										{
+											"key": "documentname",
+											"value": "test doc",
+											"type": "text"
+										},
+										{
+											"key": "filename",
+											"type": "file",
+											"src": "/home/rohityadav/Downloads/628 (1).pdf"
+										},
+										{
+											"key": "issuerid",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "poolid",
+											"value": "TETR2524818",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/addPoolDocument",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"addPoolDocument"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 18 Mar 2025 09:24:43 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "75"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Content-Security-Policy",
+									"value": "script-src 'nonce-ADE16rFtAwHmW2NmyrHbTg==';"
+								},
+								{
+									"key": "Cross-Origin-Embedder-Policy",
+									"value": "require-corp"
+								},
+								{
+									"key": "Cross-Origin-Opener-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Cross-Origin-Resource-Policy",
+									"value": "same-origin"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "My Server"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4b-ELsx7rEKf7nfcQw5M+4NT1r4pTc\""
+								},
+								{
+									"key": "Server",
+									"value": "MyServer"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statuscode\": 200,\n    \"isSuccess\": true,\n    \"message\": \"Document Added Successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Msising poolid(400)0",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "testing",
+									"type": "text"
+								},
+								{
+									"key": "documentname",
+									"value": "test doc",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/home/rohityadav/Downloads/628 (1).pdf"
+								},
+								{
+									"key": "issuerid",
+									"value": "f7ac8cca-cf9b-43c0-805a-b413d6c5e27f",
+									"type": "text"
+								},
+								{
+									"key": "poolid",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/addPoolDocument",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"addPoolDocument"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid file(403)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "testing",
+									"type": "text"
+								},
+								{
+									"key": "documentname",
+									"value": "test doc",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/home/rohityadav/Downloads/image (2).png"
+								},
+								{
+									"key": "issuerid",
+									"value": "f7ac8cca-cf9b-43c0-805a-b413d6c5e27f",
+									"type": "text"
+								},
+								{
+									"key": "poolid",
+									"value": "TETR2524818",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/addPoolDocument",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"addPoolDocument"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Msising file(400)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "testing",
+									"type": "text"
+								},
+								{
+									"key": "documentname",
+									"value": "test doc",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "issuerid",
+									"value": "f7ac8cca-cf9b-43c0-805a-b413d6c5e27f",
+									"type": "text"
+								},
+								{
+									"key": "poolid",
+									"value": "TETR2524818",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/addPoolDocument",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"addPoolDocument"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid poolid(403)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "testing",
+									"type": "text"
+								},
+								{
+									"key": "documentname",
+									"value": "test doc",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/home/rohityadav/Downloads/628.pdf"
+								},
+								{
+									"key": "issuerid",
+									"value": "f7ac8cca-cf9b-43c0-805a-b413d6c5e27f",
+									"type": "text"
+								},
+								{
+									"key": "poolid",
+									"value": "@#$$%",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/addPoolDocument",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"addPoolDocument"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIzNzM2MzMsIkVtYWlsSWQiOiJ0ZXN0aXMyQGludGFpbmZ0LmNvbSIsIlJvbGUiOiJJc3N1ZXIiLCJ1c2VySWQiOiIxOTdmNjhhMi1kN2I5LTQyZWUtOGFjMC0xNmMzMTY1NzllNjkiLCJpYXQiOjE3NDIyODcyMzN9.hBCn_JeeGwWmUpV3O6NGUgd-b3nUoolFWbiqwJim6UU",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
