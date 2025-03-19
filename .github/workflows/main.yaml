@@ -37,16 +37,10 @@ jobs:
         run: |
           newman run "Issuer APIS.postman_collection.json" -e "IM_TestNetwork.postman_environment.json" \
             --reporters cli,csv \
-            --reporter-csv-export results/results.csv \
-            --verbose > results/newman_log.txt 2>&1
+            --reporter-csv-export results/results.csv | tee results/newman_log.txt
 
-      - name: Debug - Check File Size & Content
-        run: |
-          ls -lh results/
-          echo "CSV File Content:"
-          cat results/results.csv || echo "CSV file is empty!"
-          echo "Log File Content:"
-          cat results/newman_log.txt || echo "Log file is empty!"
+      - name: Debug - List Files in Directory
+        run: ls -R results
 
       - name: Upload Test Reports (CSV & Logs)
         uses: actions/upload-artifact@v4
@@ -65,13 +59,9 @@ jobs:
           body: |
             Hi Team,
 
-            Please find attached the latest API test report.
+            Please find attached the latest API test report below:
 
-            - Results CSV: Attached
-            - Detailed Logs: Attached
-
-            If you have any questions, please review the attached logs.
-
+        
           to: udhaya.kumar@intainft.com,bharathi.m@intainft.com,srihari.sardena@intainft.com
           from: Newman Alert
           attachments: results/results.csv, results/newman_log.txt
