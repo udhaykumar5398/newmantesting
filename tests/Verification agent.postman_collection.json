@@ -1,0 +1,5097 @@
+{
+	"info": {
+		"_postman_id": "ea2432c0-d174-41a8-921a-94359ef9f031",
+		"name": "Verification agent",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34000743",
+		"_collection_link": "https://winter-sunset-730665.postman.co/workspace/My-Workspace~a1a4ac1f-c8dc-4023-8505-fb8080fe4fc1/collection/34000743-ea2432c0-d174-41a8-921a-94359ef9f031?action=share&source=collection_link&creator=34000743"
+	},
+	"item": [
+		{
+			"name": "downloadVAcertificate",
+			"item": [
+				{
+					"name": "downloadVAcertificate(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 1. Status code is 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Content-Type is application/pdf",
+									"pm.test(\"Content-Type is application/pdf\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/pdf\");",
+									"});",
+									"",
+									"// 3. Response body is not empty",
+									"pm.test(\"Response body is not empty\", function () {",
+									"    pm.expect(pm.response.text()).to.not.be.empty;",
+									"});",
+									"",
+									"// 4. Response body starts with PDF signature '%PDF'",
+									"pm.test(\"Response starts with PDF file signature\", function () {",
+									"    const bodyText = pm.response.text();",
+									"    pm.expect(bodyText.startsWith('%PDF')).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125006\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/downloadVAcertificate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"downloadVAcertificate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention access denied",
+									"pm.test(\"Error message mentions access denial\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"access denied\");",
+									"});",
+									"",
+									"// 5. statuscode should be a number",
+									"pm.test(\"statuscode is a number\", function () {",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message should be a string",
+									"pm.test(\"message is a string\", function () {",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time should be under 2 seconds",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response has expected keys only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode equals 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message gives permission-related error",
+									"pm.test(\"Message is about permission\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"permission\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Paying Agent token }}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125006\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/downloadVAcertificate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"downloadVAcertificate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expired Token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"// 2. Response is valid JSON",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should indicate token expiration",
+									"pm.test(\"Message mentions token expiration\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"token expired\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time should be under 2 seconds",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains expected fields only",
+									"pm.test(\"Response contains expected fields only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode equals 401",
+									"pm.test(\"statuscode is exactly 401\", function () {",
+									"    pm.expect(response.statuscode).to.eql(401);",
+									"});",
+									"",
+									"// 10. Message includes re-login instruction",
+									"pm.test(\"Message asks user to log in again\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"log in again\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Expired Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125006\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/downloadVAcertificate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"downloadVAcertificate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"// 2. Response should be in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing token or unauthorized",
+									"pm.test(\"Message mentions missing token or unauthorized access\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"no authorization token\");",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"unauthorized\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time is acceptable",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should only contain expected keys",
+									"pm.test(\"Response contains expected fields only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 401",
+									"pm.test(\"statuscode equals 401\", function () {",
+									"    pm.expect(response.statuscode).to.eql(401);",
+									"});",
+									"",
+									"// 10. Message matches expected token error format",
+									"pm.test(\"Message matches 'No authorization token' format\", function () {",
+									"    pm.expect(response.message).to.match(/no authorization token/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125006\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/downloadVAcertificate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"downloadVAcertificate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing input key(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse JSON response once",
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message contains all required missing fields (case-sensitive)",
+									"pm.test(\"Message includes all required missing fields\", function () {",
+									"    const expectedFields = [\"batchid\", \"issuerId\"];",
+									"    expectedFields.forEach(field => {",
+									"        pm.expect(response.message).to.include(field);",
+									"    });",
+									"});",
+									"",
+									"// 5. Message starts with expected prefix",
+									"pm.test(\"Message starts with expected prefix\", function () {",
+									"    pm.expect(response.message.startsWith(\"The following attributes are missing:\")).to.be.true;",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"Message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 8. statuscode is exactly 400",
+									"pm.test(\"statuscode is exactly 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 9. Top-level keys match expected structure",
+									"pm.test(\"Top-level keys match expected structure\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 10. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"\": \"TETE230125006\",\n    \"\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/downloadVAcertificate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"downloadVAcertificate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EMpty input(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse JSON response once",
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message contains all required missing fields (case-sensitive)",
+									"pm.test(\"Message includes all required missing fields\", function () {",
+									"    const expectedFields = [\"batchid\", \"issuerId\"];",
+									"    expectedFields.forEach(field => {",
+									"        pm.expect(response.message).to.include(field);",
+									"    });",
+									"});",
+									"",
+									"// 5. Message starts with expected prefix",
+									"pm.test(\"Message starts with expected prefix\", function () {",
+									"    pm.expect(response.message.startsWith(\"The following attributes are missing:\")).to.be.true;",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"Message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 8. statuscode is exactly 400",
+									"pm.test(\"statuscode is exactly 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 9. Top-level keys match expected structure",
+									"pm.test(\"Top-level keys match expected structure\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 10. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"\",\n    \"issuerId\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/downloadVAcertificate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"downloadVAcertificate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "missing issuerId(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing 'issuerId'",
+									"pm.test(\"Message mentions missing 'issuerId'\", function () {",
+									"    pm.expect(response.message).to.include(\"issuerId is missing\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response contains only expected keys\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 400",
+									"pm.test(\"statuscode equals 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 10. Message format matches expected missing field format",
+									"pm.test(\"Message format is correct\", function () {",
+									"    pm.expect(response.message).to.match(/issuerId is missing/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125006\",\n    \"issuerId\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/downloadVAcertificate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"downloadVAcertificate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid issuerId(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention invalid 'issuerName'",
+									"pm.test(\"Message mentions invalid 'issuerId'\", function () {",
+									"    pm.expect(response.message).to.include(\"valid issuerId\");",
+									"});",
+									"",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should contain only expected fields",
+									"pm.test(\"Response contains only expected fields\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode is exactly 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message format matches expected structure",
+									"pm.test(\"Message format is valid\", function () {",
+									"    pm.expect(response.message).to.match(/please enter a valid issuerId/i);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125006\",\n    \"issuerId\": \"@#@$#\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/downloadVAcertificate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"downloadVAcertificate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing batchid(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing 'description'",
+									"pm.test(\"Message mentions missing 'batchid'\", function () {",
+									"    pm.expect(response.message).to.include(\"batchid is missing\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response contains only expected keys\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 400",
+									"pm.test(\"statuscode equals 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 10. Message format matches expected missing field format",
+									"pm.test(\"Message format is correct\", function () {",
+									"    pm.expect(response.message).to.match(/batchid is missing/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/downloadVAcertificate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"downloadVAcertificate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid batchid(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention invalid 'issuerName'",
+									"pm.test(\"Message mentions invalid 'batchid'\", function () {",
+									"    pm.expect(response.message).to.include(\"valid batchid\");",
+									"});",
+									"",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should contain only expected fields",
+									"pm.test(\"Response contains only expected fields\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode is exactly 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message format matches expected structure",
+									"pm.test(\"Message format is valid\", function () {",
+									"    pm.expect(response.message).to.match(/please enter a valid batchid/i);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"@#$%$#\",\n    \"issuerId\": \"197f68a2-d7b9-42ee-8ac0-16c316579e69\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/downloadVAcertificate",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"downloadVAcertificate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "fetchVAToken",
+			"item": [
+				{
+					"name": "fetchVAToken(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse response once",
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code is 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess is true",
+									"pm.test(\"isSuccess is true\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(true);",
+									"});",
+									"",
+									"// 4. JWTToken exists and is a non-empty string",
+									"pm.test(\"JWTToken exists and is a valid string\", function () {",
+									"    pm.expect(response).to.have.property(\"JWTToken\");",
+									"    pm.expect(response.JWTToken).to.be.a(\"string\").and.not.empty;",
+									"});",
+									"",
+									"// 5. JWT has 3 parts separated by dots",
+									"pm.test(\"JWTToken structure is valid (header.payload.signature)\", function () {",
+									"    const tokenParts = response.JWTToken.split(\".\");",
+									"    pm.expect(tokenParts.length).to.eql(3);",
+									"});",
+									"",
+									"// 6. Decode and validate JWT payload fields",
+									"pm.test(\"JWT payload contains expected fields\", function () {",
+									"    const payloadBase64 = response.JWTToken.split(\".\")[1];",
+									"    const payloadJson = atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/'));",
+									"    const payload = JSON.parse(decodeURIComponent(escape(payloadJson)));",
+									"",
+									"    pm.expect(payload).to.have.property(\"emailid\");",
+									"    pm.expect(payload).to.have.property(\"userrole\");",
+									"    pm.expect(payload).to.have.property(\"platformname\");",
+									"    pm.expect(payload).to.have.property(\"exp\");",
+									"    pm.expect(payload).to.have.property(\"iat\");",
+									"});",
+									"",
+									"// 7. Token is not expired",
+									"pm.test(\"JWT token is not expired\", function () {",
+									"    const payloadBase64 = response.JWTToken.split(\".\")[1];",
+									"    const payloadJson = atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/'));",
+									"    const payload = JSON.parse(decodeURIComponent(escape(payloadJson)));",
+									"",
+									"    const now = Math.floor(Date.now() / 1000);",
+									"    pm.expect(payload.exp).to.be.above(now);",
+									"});",
+									"",
+									"// 8. Save JWTToken to environment variable",
+									"pm.environment.set(\"authToken\", response.JWTToken);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/fetchVAToken?VAToken=dGVzdFZBMUBnbWFpbC5jb206SW50QDEjTUBLJlQkOlByb2Nlc3NvcjpJbnRhaW5NYXJrZXRz",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fetchVAToken"
+							],
+							"query": [
+								{
+									"key": "VAToken",
+									"value": "dGVzdFZBMUBnbWFpbC5jb206SW50QDEjTUBLJlQkOlByb2Nlc3NvcjpJbnRhaW5NYXJrZXRz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention access denied",
+									"pm.test(\"Error message mentions access denial\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"access denied\");",
+									"});",
+									"",
+									"// 5. statuscode should be a number",
+									"pm.test(\"statuscode is a number\", function () {",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message should be a string",
+									"pm.test(\"message is a string\", function () {",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time should be under 2 seconds",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response has expected keys only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode equals 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message gives permission-related error",
+									"pm.test(\"Message is about permission\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"permission\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Paying Agent token }}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/fetchVAToken?VAToken=dGVzdFZBMUBnbWFpbC5jb206SW50QDEjTUBLJlQkOlByb2Nlc3NvcjpJbnRhaW5NYXJrZXRz",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fetchVAToken"
+							],
+							"query": [
+								{
+									"key": "VAToken",
+									"value": "dGVzdFZBMUBnbWFpbC5jb206SW50QDEjTUBLJlQkOlByb2Nlc3NvcjpJbnRhaW5NYXJrZXRz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"// 2. Response should be in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing token or unauthorized",
+									"pm.test(\"Message mentions missing token or unauthorized access\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"no authorization token\");",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"unauthorized\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time is acceptable",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should only contain expected keys",
+									"pm.test(\"Response contains expected fields only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 401",
+									"pm.test(\"statuscode equals 401\", function () {",
+									"    pm.expect(response.statuscode).to.eql(401);",
+									"});",
+									"",
+									"// 10. Message matches expected token error format",
+									"pm.test(\"Message matches 'No authorization token' format\", function () {",
+									"    pm.expect(response.message).to.match(/no authorization token/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/fetchVAToken?VAToken=dGVzdFZBMUBnbWFpbC5jb206SW50QDEjTUBLJlQkOlByb2Nlc3NvcjpJbnRhaW5NYXJrZXRz",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fetchVAToken"
+							],
+							"query": [
+								{
+									"key": "VAToken",
+									"value": "dGVzdFZBMUBnbWFpbC5jb206SW50QDEjTUBLJlQkOlByb2Nlc3NvcjpJbnRhaW5NYXJrZXRz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expired Token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"// 2. Response is valid JSON",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should indicate token expiration",
+									"pm.test(\"Message mentions token expiration\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"token expired\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time should be under 2 seconds",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains expected fields only",
+									"pm.test(\"Response contains expected fields only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode equals 401",
+									"pm.test(\"statuscode is exactly 401\", function () {",
+									"    pm.expect(response.statuscode).to.eql(401);",
+									"});",
+									"",
+									"// 10. Message includes re-login instruction",
+									"pm.test(\"Message asks user to log in again\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"log in again\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Expired Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/fetchVAToken?VAToken=dGVzdFZBMUBnbWFpbC5jb206SW50QDEjTUBLJlQkOlByb2Nlc3NvcjpJbnRhaW5NYXJrZXRz",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fetchVAToken"
+							],
+							"query": [
+								{
+									"key": "VAToken",
+									"value": "dGVzdFZBMUBnbWFpbC5jb206SW50QDEjTUBLJlQkOlByb2Nlc3NvcjpJbnRhaW5NYXJrZXRz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing input key(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing 'description'",
+									"pm.test(\"Message mentions missing 'VAToken'\", function () {",
+									"    pm.expect(response.message).to.include(\"VAToken is missing\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response contains only expected keys\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 400",
+									"pm.test(\"statuscode equals 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 10. Message format matches expected missing field format",
+									"pm.test(\"Message format is correct\", function () {",
+									"    pm.expect(response.message).to.match(/VAToken is missing/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/fetchVAToken?=dGVzdFZBMUBnbWFpbC5jb206SW50QDEjTUBLJlQkOlByb2Nlc3NvcjpJbnRhaW5NYXJrZXRz",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fetchVAToken"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "dGVzdFZBMUBnbWFpbC5jb206SW50QDEjTUBLJlQkOlByb2Nlc3NvcjpJbnRhaW5NYXJrZXRz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "missing VAToken(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing 'description'",
+									"pm.test(\"Message mentions missing 'VAToken'\", function () {",
+									"    pm.expect(response.message).to.include(\"VAToken is missing\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response contains only expected keys\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 400",
+									"pm.test(\"statuscode equals 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 10. Message format matches expected missing field format",
+									"pm.test(\"Message format is correct\", function () {",
+									"    pm.expect(response.message).to.match(/VAToken is missing/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/fetchVAToken?VAToken=",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fetchVAToken"
+							],
+							"query": [
+								{
+									"key": "VAToken",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid VAToken(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention invalid 'issuerName'",
+									"pm.test(\"Message mentions invalid 'VAToken'\", function () {",
+									"    pm.expect(response.message).to.include(\"valid VAToken\");",
+									"});",
+									"",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should contain only expected fields",
+									"pm.test(\"Response contains only expected fields\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode is exactly 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message format matches expected structure",
+									"pm.test(\"Message format is valid\", function () {",
+									"    pm.expect(response.message).to.match(/please enter a valid VAToken/i);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/fetchVAToken?VAToken=@%23$%$%23@!@%23$%$%23@",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"fetchVAToken"
+							],
+							"query": [
+								{
+									"key": "VAToken",
+									"value": "@%23$%$%23@!@%23$%$%23@"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getallbatchsbyVAId",
+			"item": [
+				{
+					"name": "getallbatchsbyVAId(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse response",
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code is 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Response is in JSON format and result is array",
+									"pm.test(\"Response is JSON and result is array\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"    pm.expect(response.result).to.be.an(\"array\").that.is.not.empty;",
+									"});",
+									"",
+									"// 3. isSuccess is true",
+									"pm.test(\"isSuccess is true\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(true);",
+									"});",
+									"",
+									"// 4. Each batch has required fields",
+									"pm.test(\"Each batch contains required fields\", function () {",
+									"    const requiredFields = [",
+									"        \"_id\", \"batchid\", \"loanids\", \"assetclass\", \"originatorname\",",
+									"        \"issuerId\", \"assignverification\", \"setupdate\",",
+									"        \"verificationtemplate\", \"fieldstoverify\", \"contractpath\", \"status\", \"batchverified\"",
+									"    ];",
+									"    response.result.forEach((batch, index) => {",
+									"        requiredFields.forEach(field => {",
+									"            pm.expect(batch, `Missing '${field}' in batch ${index}`).to.have.property(field);",
+									"        });",
+									"    });",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									"// 7. batchverified must be 'YES' or 'NO' (case-insensitive)",
+									"pm.test(\"batchverified is 'YES' or 'NO' (case-insensitive)\", function () {",
+									"    response.result.forEach(batch => {",
+									"        pm.expect([\"yes\", \"no\"]).to.include(batch.batchverified.toLowerCase(), `Invalid batchverified: ${batch.batchverified}`);",
+									"    });",
+									"});",
+									"",
+									"",
+									"",
+									"// 9. Top-level keys in response",
+									"pm.test(\"Top-level keys are as expected\", function () {",
+									"    const expectedKeys = [\"statuscode\", \"isSuccess\", \"result\"];",
+									"    pm.expect(Object.keys(response).sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 10. Response time should be below 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/getallbatchsbyVAId?VAId=8a9a9982-3608-4bde-9d7f-ffe3275f0438&mailid=testva1@gmail.com",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getallbatchsbyVAId"
+							],
+							"query": [
+								{
+									"key": "VAId",
+									"value": "8a9a9982-3608-4bde-9d7f-ffe3275f0438"
+								},
+								{
+									"key": "mailid",
+									"value": "testva1@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "No data with vaid(404)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code is 404",
+									"pm.test(\"Status code is 404\", function () {",
+									"pm.response.to.have.status(404);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"pm.response.to.be.withBody;",
+									"pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. statuscode should be 404",
+									"pm.test(\"statuscode is 404\", function () {",
+									"pm.expect(response.statuscode).to.eql(404);",
+									"});",
+									"",
+									"// 5. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"pm.expect(response).to.have.property(\"message\");",
+									"pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 6. message matches expected text",
+									"pm.test(\"Message is 'No data with this poolid'\", function () {",
+									"pm.expect(response.message).to.eql(\"No data with this VAId\");",
+									"});",
+									"",
+									"// 7. Response contains only expected keys",
+									"pm.test(\"Response contains expected keys only\", function () {",
+									"const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"const actualKeys = Object.keys(response);",
+									"pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 8. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/getallbatchsbyVAId?VAId=8a9a9982-3608-4bde-9d7f-ffe3275f082&mailid=testva1@gmail.com",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getallbatchsbyVAId"
+							],
+							"query": [
+								{
+									"key": "VAId",
+									"value": "8a9a9982-3608-4bde-9d7f-ffe3275f082"
+								},
+								{
+									"key": "mailid",
+									"value": "testva1@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention access denied",
+									"pm.test(\"Error message mentions access denial\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"access denied\");",
+									"});",
+									"",
+									"// 5. statuscode should be a number",
+									"pm.test(\"statuscode is a number\", function () {",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message should be a string",
+									"pm.test(\"message is a string\", function () {",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time should be under 2 seconds",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response has expected keys only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode equals 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message gives permission-related error",
+									"pm.test(\"Message is about permission\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"permission\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Paying Agent token }}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/getallbatchsbyVAId?VAId=8a9a9982-3608-4bde-9d7f-ffe3275f0438&mailid=testva1@gmail.com",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getallbatchsbyVAId"
+							],
+							"query": [
+								{
+									"key": "VAId",
+									"value": "8a9a9982-3608-4bde-9d7f-ffe3275f0438"
+								},
+								{
+									"key": "mailid",
+									"value": "testva1@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expired Token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"// 2. Response is valid JSON",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should indicate token expiration",
+									"pm.test(\"Message mentions token expiration\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"token expired\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time should be under 2 seconds",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains expected fields only",
+									"pm.test(\"Response contains expected fields only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode equals 401",
+									"pm.test(\"statuscode is exactly 401\", function () {",
+									"    pm.expect(response.statuscode).to.eql(401);",
+									"});",
+									"",
+									"// 10. Message includes re-login instruction",
+									"pm.test(\"Message asks user to log in again\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"log in again\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Expired Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/getallbatchsbyVAId?VAId=8a9a9982-3608-4bde-9d7f-ffe3275f0438&mailid=testva1@gmail.com",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getallbatchsbyVAId"
+							],
+							"query": [
+								{
+									"key": "VAId",
+									"value": "8a9a9982-3608-4bde-9d7f-ffe3275f0438"
+								},
+								{
+									"key": "mailid",
+									"value": "testva1@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"// 2. Response should be in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing token or unauthorized",
+									"pm.test(\"Message mentions missing token or unauthorized access\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"no authorization token\");",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"unauthorized\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time is acceptable",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should only contain expected keys",
+									"pm.test(\"Response contains expected fields only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 401",
+									"pm.test(\"statuscode equals 401\", function () {",
+									"    pm.expect(response.statuscode).to.eql(401);",
+									"});",
+									"",
+									"// 10. Message matches expected token error format",
+									"pm.test(\"Message matches 'No authorization token' format\", function () {",
+									"    pm.expect(response.message).to.match(/no authorization token/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/getallbatchsbyVAId?VAId=8a9a9982-3608-4bde-9d7f-ffe3275f0438&mailid=testva1@gmail.com",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getallbatchsbyVAId"
+							],
+							"query": [
+								{
+									"key": "VAId",
+									"value": "8a9a9982-3608-4bde-9d7f-ffe3275f0438"
+								},
+								{
+									"key": "mailid",
+									"value": "testva1@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing input key(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse JSON response once",
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message contains all required missing fields (case-sensitive)",
+									"pm.test(\"Message includes all required missing fields\", function () {",
+									"    const expectedFields = [\"VAId\", \"mailid\"];",
+									"    expectedFields.forEach(field => {",
+									"        pm.expect(response.message).to.include(field);",
+									"    });",
+									"});",
+									"",
+									"// 5. Message starts with expected prefix",
+									"pm.test(\"Message starts with expected prefix\", function () {",
+									"    pm.expect(response.message.startsWith(\"The following attributes are missing:\")).to.be.true;",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"Message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 8. statuscode is exactly 400",
+									"pm.test(\"statuscode is exactly 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 9. Top-level keys match expected structure",
+									"pm.test(\"Top-level keys match expected structure\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 10. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/getallbatchsbyVAId?=8a9a9982-3608-4bde-9d7f-ffe3275f0438&=testva1@gmail.com",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getallbatchsbyVAId"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "8a9a9982-3608-4bde-9d7f-ffe3275f0438"
+								},
+								{
+									"key": "",
+									"value": "testva1@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty input(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse JSON response once",
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message contains all required missing fields (case-sensitive)",
+									"pm.test(\"Message includes all required missing fields\", function () {",
+									"    const expectedFields = [\"VAId\", \"mailid\"];",
+									"    expectedFields.forEach(field => {",
+									"        pm.expect(response.message).to.include(field);",
+									"    });",
+									"});",
+									"",
+									"// 5. Message starts with expected prefix",
+									"pm.test(\"Message starts with expected prefix\", function () {",
+									"    pm.expect(response.message.startsWith(\"The following attributes are missing:\")).to.be.true;",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"Message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 8. statuscode is exactly 400",
+									"pm.test(\"statuscode is exactly 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 9. Top-level keys match expected structure",
+									"pm.test(\"Top-level keys match expected structure\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 10. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/getallbatchsbyVAId?VAId=&mailid=",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getallbatchsbyVAId"
+							],
+							"query": [
+								{
+									"key": "VAId",
+									"value": ""
+								},
+								{
+									"key": "mailid",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing mailid(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing 'description'",
+									"pm.test(\"Message mentions missing 'mailid'\", function () {",
+									"    pm.expect(response.message).to.include(\"mailid is missing\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response contains only expected keys\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 400",
+									"pm.test(\"statuscode equals 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 10. Message format matches expected missing field format",
+									"pm.test(\"Message format is correct\", function () {",
+									"    pm.expect(response.message).to.match(/mailid is missing/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/getallbatchsbyVAId?VAId=8a9a9982-3608-4bde-9d7f-ffe3275f0438&mailid=",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getallbatchsbyVAId"
+							],
+							"query": [
+								{
+									"key": "VAId",
+									"value": "8a9a9982-3608-4bde-9d7f-ffe3275f0438"
+								},
+								{
+									"key": "mailid",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid mailid(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention invalid 'issuerName'",
+									"pm.test(\"Message mentions invalid 'mailid'\", function () {",
+									"    pm.expect(response.message).to.include(\"valid mailid\");",
+									"});",
+									"",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should contain only expected fields",
+									"pm.test(\"Response contains only expected fields\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode is exactly 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message format matches expected structure",
+									"pm.test(\"Message format is valid\", function () {",
+									"    pm.expect(response.message).to.match(/please enter a valid mailid/i);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/getallbatchsbyVAId?VAId=8a9a9982-3608-4bde-9d7f-ffe3275f0438&mailid=njbKJFU",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getallbatchsbyVAId"
+							],
+							"query": [
+								{
+									"key": "VAId",
+									"value": "8a9a9982-3608-4bde-9d7f-ffe3275f0438"
+								},
+								{
+									"key": "mailid",
+									"value": "njbKJFU"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing VAId(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing 'description'",
+									"pm.test(\"Message mentions missing 'VAId'\", function () {",
+									"    pm.expect(response.message).to.include(\"VAId is missing\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response contains only expected keys\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 400",
+									"pm.test(\"statuscode equals 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 10. Message format matches expected missing field format",
+									"pm.test(\"Message format is correct\", function () {",
+									"    pm.expect(response.message).to.match(/VAId is missing/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/getallbatchsbyVAId?VAId=&mailid=testva1@gmail.com",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getallbatchsbyVAId"
+							],
+							"query": [
+								{
+									"key": "VAId",
+									"value": ""
+								},
+								{
+									"key": "mailid",
+									"value": "testva1@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid VAId(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention invalid 'issuerName'",
+									"pm.test(\"Message mentions invalid 'VAId'\", function () {",
+									"    pm.expect(response.message).to.include(\"valid VAId\");",
+									"});",
+									"",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should contain only expected fields",
+									"pm.test(\"Response contains only expected fields\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode is exactly 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message format matches expected structure",
+									"pm.test(\"Message format is valid\", function () {",
+									"    pm.expect(response.message).to.match(/please enter a valid VAId/i);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/getallbatchsbyVAId?VAId=@%23$%$%23@%23&mailid=testva1@gmail.com",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getallbatchsbyVAId"
+							],
+							"query": [
+								{
+									"key": "VAId",
+									"value": "@%23$%$%23@%23"
+								},
+								{
+									"key": "mailid",
+									"value": "testva1@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MoveVAcontractfiles",
+			"item": [
+				{
+					"name": "MoveVAcontractfiles(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse JSON response once",
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Response should be in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be true",
+									"pm.test(\"isSuccess is true\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(true);",
+									"});",
+									"",
+									"// 4. Message should match exactly",
+									"pm.test(\"Message is 'Contract PDF file moved'\", function () {",
+									"    pm.expect(response.message).to.eql(\"Contract PDF file moved\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Message starts with 'Deal Update'",
+									"pm.test(\"Message starts with 'Contract PDF file moved'\", function () {",
+									"    pm.expect(response.message.startsWith(\"Contract PDF file moved\")).to.be.true;",
+									"});",
+									"",
+									"// 8. Message ends with 'Success'",
+									"pm.test(\"Message ends with 'Contract PDF file moved'\", function () {",
+									"    pm.expect(response.message.endsWith(\"Contract PDF file moved\")).to.be.true;",
+									"});",
+									"",
+									"// 9. Top-level keys match expected",
+									"pm.test(\"Top-level keys match expected structure\", function () {",
+									"    const expectedKeys = [\"statuscode\", \"isSuccess\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 10. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(8000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"batchid\": \"TETE230125001\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/MoveVAcontractfiles",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"MoveVAcontractfiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention access denied",
+									"pm.test(\"Error message mentions access denial\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"access denied\");",
+									"});",
+									"",
+									"// 5. statuscode should be a number",
+									"pm.test(\"statuscode is a number\", function () {",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message should be a string",
+									"pm.test(\"message is a string\", function () {",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time should be under 2 seconds",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response has expected keys only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode equals 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message gives permission-related error",
+									"pm.test(\"Message is about permission\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"permission\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Paying Agent token }}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"batchid\": \"TETE230125001\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/MoveVAcontractfiles",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"MoveVAcontractfiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expired Token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"// 2. Response is valid JSON",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should indicate token expiration",
+									"pm.test(\"Message mentions token expiration\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"token expired\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time should be under 2 seconds",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains expected fields only",
+									"pm.test(\"Response contains expected fields only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode equals 401",
+									"pm.test(\"statuscode is exactly 401\", function () {",
+									"    pm.expect(response.statuscode).to.eql(401);",
+									"});",
+									"",
+									"// 10. Message includes re-login instruction",
+									"pm.test(\"Message asks user to log in again\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"log in again\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Expired Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"batchid\": \"TETE230125001\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/MoveVAcontractfiles",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"MoveVAcontractfiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"// 2. Response should be in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing token or unauthorized",
+									"pm.test(\"Message mentions missing token or unauthorized access\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"no authorization token\");",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"unauthorized\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time is acceptable",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should only contain expected keys",
+									"pm.test(\"Response contains expected fields only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 401",
+									"pm.test(\"statuscode equals 401\", function () {",
+									"    pm.expect(response.statuscode).to.eql(401);",
+									"});",
+									"",
+									"// 10. Message matches expected token error format",
+									"pm.test(\"Message matches 'No authorization token' format\", function () {",
+									"    pm.expect(response.message).to.match(/no authorization token/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"batchid\": \"TETE230125001\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/MoveVAcontractfiles",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"MoveVAcontractfiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing input key(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing 'description'",
+									"pm.test(\"Message mentions missing 'batchid'\", function () {",
+									"    pm.expect(response.message).to.include(\"batchid is missing\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response contains only expected keys\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 400",
+									"pm.test(\"statuscode equals 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 10. Message format matches expected missing field format",
+									"pm.test(\"Message format is correct\", function () {",
+									"    pm.expect(response.message).to.match(/batchid is missing/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"\": \"TETE230125001\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/MoveVAcontractfiles",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"MoveVAcontractfiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing batchid(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing 'description'",
+									"pm.test(\"Message mentions missing 'batchid'\", function () {",
+									"    pm.expect(response.message).to.include(\"batchid is missing\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response contains only expected keys\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 400",
+									"pm.test(\"statuscode equals 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 10. Message format matches expected missing field format",
+									"pm.test(\"Message format is correct\", function () {",
+									"    pm.expect(response.message).to.match(/batchid is missing/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"batchid\": \"\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/MoveVAcontractfiles",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"MoveVAcontractfiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid batchid(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention invalid 'issuerName'",
+									"pm.test(\"Message mentions invalid 'batchid'\", function () {",
+									"    pm.expect(response.message).to.include(\"valid batchid\");",
+									"});",
+									"",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should contain only expected fields",
+									"pm.test(\"Response contains only expected fields\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode is exactly 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message format matches expected structure",
+									"pm.test(\"Message format is valid\", function () {",
+									"    pm.expect(response.message).to.match(/please enter a valid batchid/i);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"batchid\": \"@#$%$#\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/MoveVAcontractfiles",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"MoveVAcontractfiles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "NFTmint",
+			"item": [
+				{
+					"name": "NFTmint(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse JSON response once",
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Response should be in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be true",
+									"pm.test(\"isSuccess is true\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(true);",
+									"});",
+									"",
+									"// 4. Message should match exactly",
+									"pm.test(\"Message is 'NFT Mint already done'\", function () {",
+									"    pm.expect(response.message).to.eql(\"NFT Mint already done\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Message starts with 'Deal Update'",
+									"pm.test(\"Message starts with 'NFT Mint already done'\", function () {",
+									"    pm.expect(response.message.startsWith(\"NFT Mint already done\")).to.be.true;",
+									"});",
+									"",
+									"// 8. Message ends with 'Success'",
+									"pm.test(\"Message ends with 'NFT Mint already done'\", function () {",
+									"    pm.expect(response.message.endsWith(\"NFT Mint already done\")).to.be.true;",
+									"});",
+									"",
+									"// 9. Top-level keys match expected",
+									"pm.test(\"Top-level keys match expected structure\", function () {",
+									"    const expectedKeys = [\"statuscode\", \"isSuccess\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 10. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125002\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/NFTmint",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"NFTmint"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention access denied",
+									"pm.test(\"Error message mentions access denial\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"access denied\");",
+									"});",
+									"",
+									"// 5. statuscode should be a number",
+									"pm.test(\"statuscode is a number\", function () {",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message should be a string",
+									"pm.test(\"message is a string\", function () {",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time should be under 2 seconds",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response has expected keys only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode equals 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message gives permission-related error",
+									"pm.test(\"Message is about permission\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"permission\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Paying Agent token }}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125002\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/NFTmint",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"NFTmint"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expired Token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"// 2. Response is valid JSON",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should indicate token expiration",
+									"pm.test(\"Message mentions token expiration\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"token expired\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time should be under 2 seconds",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains expected fields only",
+									"pm.test(\"Response contains expected fields only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode equals 401",
+									"pm.test(\"statuscode is exactly 401\", function () {",
+									"    pm.expect(response.statuscode).to.eql(401);",
+									"});",
+									"",
+									"// 10. Message includes re-login instruction",
+									"pm.test(\"Message asks user to log in again\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"log in again\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Expired Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125002\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/NFTmint",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"NFTmint"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"// 2. Response should be in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing token or unauthorized",
+									"pm.test(\"Message mentions missing token or unauthorized access\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"no authorization token\");",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"unauthorized\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time is acceptable",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should only contain expected keys",
+									"pm.test(\"Response contains expected fields only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 401",
+									"pm.test(\"statuscode equals 401\", function () {",
+									"    pm.expect(response.statuscode).to.eql(401);",
+									"});",
+									"",
+									"// 10. Message matches expected token error format",
+									"pm.test(\"Message matches 'No authorization token' format\", function () {",
+									"    pm.expect(response.message).to.match(/no authorization token/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125002\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/NFTmint",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"NFTmint"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing input key(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing 'description'",
+									"pm.test(\"Message mentions missing 'batchid'\", function () {",
+									"    pm.expect(response.message).to.include(\"batchid is missing\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response contains only expected keys\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 400",
+									"pm.test(\"statuscode equals 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 10. Message format matches expected missing field format",
+									"pm.test(\"Message format is correct\", function () {",
+									"    pm.expect(response.message).to.match(/batchid is missing/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"\": \"TETE230125002\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/NFTmint",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"NFTmint"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing batchid(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing 'description'",
+									"pm.test(\"Message mentions missing 'batchid'\", function () {",
+									"    pm.expect(response.message).to.include(\"batchid is missing\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response contains only expected keys\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 400",
+									"pm.test(\"statuscode equals 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 10. Message format matches expected missing field format",
+									"pm.test(\"Message format is correct\", function () {",
+									"    pm.expect(response.message).to.match(/batchid is missing/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/NFTmint",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"NFTmint"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid batchid(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention invalid 'issuerName'",
+									"pm.test(\"Message mentions invalid 'batchid'\", function () {",
+									"    pm.expect(response.message).to.include(\"valid batchid\");",
+									"});",
+									"",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should contain only expected fields",
+									"pm.test(\"Response contains only expected fields\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode is exactly 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message format matches expected structure",
+									"pm.test(\"Message format is valid\", function () {",
+									"    pm.expect(response.message).to.match(/please enter a valid batchid/i);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"!@#$%\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/NFTmint",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"NFTmint"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "updateBatchStatus",
+			"item": [
+				{
+					"name": "updateBatchStatus(200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse JSON response once",
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 2. Response should be in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be true",
+									"pm.test(\"isSuccess is true\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(true);",
+									"});",
+									"",
+									"// 4. Message should match exactly",
+									"pm.test(\"Message is 'Batch status updated sucessfully'\", function () {",
+									"    pm.expect(response.message).to.eql(\"Batch status updated sucessfully\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Message starts with 'Deal Update'",
+									"pm.test(\"Message starts with 'Batch status updated sucessfully'\", function () {",
+									"    pm.expect(response.message.startsWith(\"Batch status updated sucessfully\")).to.be.true;",
+									"});",
+									"",
+									"// 8. Message ends with 'Success'",
+									"pm.test(\"Message ends with 'Batch status updated sucessfully'\", function () {",
+									"    pm.expect(response.message.endsWith(\"Batch status updated sucessfully\")).to.be.true;",
+									"});",
+									"",
+									"// 9. Top-level keys match expected",
+									"pm.test(\"Top-level keys match expected structure\", function () {",
+									"    const expectedKeys = [\"statuscode\", \"isSuccess\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 10. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125001\",\n    \"status\": \"Accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/updateBatchStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"updateBatchStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention access denied",
+									"pm.test(\"Error message mentions access denial\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"access denied\");",
+									"});",
+									"",
+									"// 5. statuscode should be a number",
+									"pm.test(\"statuscode is a number\", function () {",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message should be a string",
+									"pm.test(\"message is a string\", function () {",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time should be under 2 seconds",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response has expected keys only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode equals 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message gives permission-related error",
+									"pm.test(\"Message is about permission\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"permission\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Paying Agent token }}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125001\",\n    \"status\": \"Accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/updateBatchStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"updateBatchStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expired Token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"// 2. Response is valid JSON",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should indicate token expiration",
+									"pm.test(\"Message mentions token expiration\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"token expired\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time should be under 2 seconds",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains expected fields only",
+									"pm.test(\"Response contains expected fields only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode equals 401",
+									"pm.test(\"statuscode is exactly 401\", function () {",
+									"    pm.expect(response.statuscode).to.eql(401);",
+									"});",
+									"",
+									"// 10. Message includes re-login instruction",
+									"pm.test(\"Message asks user to log in again\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"log in again\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Expired Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125001\",\n    \"status\": \"Accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/updateBatchStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"updateBatchStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EMpty token(401)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 401",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"// 2. Response should be in JSON format",
+									"pm.test(\"Response is JSON\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing token or unauthorized",
+									"pm.test(\"Message mentions missing token or unauthorized access\", function () {",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"no authorization token\");",
+									"    pm.expect(response.message.toLowerCase()).to.include(\"unauthorized\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a('number');",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a('string');",
+									"});",
+									"",
+									"// 7. Response time is acceptable",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should only contain expected keys",
+									"pm.test(\"Response contains expected fields only\", function () {",
+									"    const expectedKeys = ['isSuccess', 'statuscode', 'message'];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 401",
+									"pm.test(\"statuscode equals 401\", function () {",
+									"    pm.expect(response.statuscode).to.eql(401);",
+									"});",
+									"",
+									"// 10. Message matches expected token error format",
+									"pm.test(\"Message matches 'No authorization token' format\", function () {",
+									"    pm.expect(response.message).to.match(/no authorization token/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125001\",\n    \"status\": \"Accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/updateBatchStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"updateBatchStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing input key(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse JSON response once",
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message contains all required missing fields (case-sensitive)",
+									"pm.test(\"Message includes all required missing fields\", function () {",
+									"    const expectedFields = [\"batchid\", \"status\"];",
+									"    expectedFields.forEach(field => {",
+									"        pm.expect(response.message).to.include(field);",
+									"    });",
+									"});",
+									"",
+									"// 5. Message starts with expected prefix",
+									"pm.test(\"Message starts with expected prefix\", function () {",
+									"    pm.expect(response.message.startsWith(\"The following attributes are missing:\")).to.be.true;",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"Message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 8. statuscode is exactly 400",
+									"pm.test(\"statuscode is exactly 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 9. Top-level keys match expected structure",
+									"pm.test(\"Top-level keys match expected structure\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 10. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"\": \"TETE230125001\",\n    \"\": \"Accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/updateBatchStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"updateBatchStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty input(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse JSON response once",
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message contains all required missing fields (case-sensitive)",
+									"pm.test(\"Message includes all required missing fields\", function () {",
+									"    const expectedFields = [\"batchid\", \"status\"];",
+									"    expectedFields.forEach(field => {",
+									"        pm.expect(response.message).to.include(field);",
+									"    });",
+									"});",
+									"",
+									"// 5. Message starts with expected prefix",
+									"pm.test(\"Message starts with expected prefix\", function () {",
+									"    pm.expect(response.message.startsWith(\"The following attributes are missing:\")).to.be.true;",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"Message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 8. statuscode is exactly 400",
+									"pm.test(\"statuscode is exactly 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 9. Top-level keys match expected structure",
+									"pm.test(\"Top-level keys match expected structure\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 10. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"\",\n    \"status\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/updateBatchStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"updateBatchStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing status(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing 'description'",
+									"pm.test(\"Message mentions missing 'status'\", function () {",
+									"    pm.expect(response.message).to.include(\"status is missing\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response contains only expected keys\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 400",
+									"pm.test(\"statuscode equals 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 10. Message format matches expected missing field format",
+									"pm.test(\"Message format is correct\", function () {",
+									"    pm.expect(response.message).to.match(/status is missing/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125001\",\n    \"status\": \"\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/updateBatchStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"updateBatchStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid status(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention invalid 'issuerName'",
+									"pm.test(\"Message mentions invalid 'status'\", function () {",
+									"    pm.expect(response.message).to.include(\"valid status\");",
+									"});",
+									"",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should contain only expected fields",
+									"pm.test(\"Response contains only expected fields\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode is exactly 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message format matches expected structure",
+									"pm.test(\"Message format is valid\", function () {",
+									"    pm.expect(response.message).to.match(/please enter a valid status/i);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"TETE230125001\",\n    \"status\": \"@#$%$#@\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/updateBatchStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"updateBatchStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing batchid(400)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 400",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention missing 'description'",
+									"pm.test(\"Message mentions missing 'batchid'\", function () {",
+									"    pm.expect(response.message).to.include(\"batchid is missing\");",
+									"});",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time should be under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response contains only expected keys",
+									"pm.test(\"Response contains only expected keys\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode should exactly equal 400",
+									"pm.test(\"statuscode equals 400\", function () {",
+									"    pm.expect(response.statuscode).to.eql(400);",
+									"});",
+									"",
+									"// 10. Message format matches expected missing field format",
+									"pm.test(\"Message format is correct\", function () {",
+									"    pm.expect(response.message).to.match(/batchid is missing/i);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"\",\n    \"status\": \"Accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/updateBatchStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"updateBatchStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid batchid(403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"// 1. Status code should be 403",
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"// 2. Response is in JSON format",
+									"pm.test(\"Response is in JSON format\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"// 3. isSuccess should be false",
+									"pm.test(\"isSuccess is false\", function () {",
+									"    pm.expect(response.isSuccess).to.eql(false);",
+									"});",
+									"",
+									"// 4. Message should mention invalid 'issuerName'",
+									"pm.test(\"Message mentions invalid 'batchid'\", function () {",
+									"    pm.expect(response.message).to.include(\"valid batchid\");",
+									"});",
+									"",
+									"",
+									"// 5. statuscode exists and is a number",
+									"pm.test(\"statuscode exists and is a number\", function () {",
+									"    pm.expect(response).to.have.property(\"statuscode\");",
+									"    pm.expect(response.statuscode).to.be.a(\"number\");",
+									"});",
+									"",
+									"// 6. message exists and is a string",
+									"pm.test(\"message exists and is a string\", function () {",
+									"    pm.expect(response).to.have.property(\"message\");",
+									"    pm.expect(response.message).to.be.a(\"string\");",
+									"});",
+									"",
+									"// 7. Response time is under 2000ms",
+									"pm.test(\"Response time is under 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});",
+									"",
+									"// 8. Response should contain only expected fields",
+									"pm.test(\"Response contains only expected fields\", function () {",
+									"    const expectedKeys = [\"isSuccess\", \"statuscode\", \"message\"];",
+									"    const actualKeys = Object.keys(response);",
+									"    pm.expect(actualKeys.sort()).to.eql(expectedKeys.sort());",
+									"});",
+									"",
+									"// 9. statuscode is exactly 403",
+									"pm.test(\"statuscode is exactly 403\", function () {",
+									"    pm.expect(response.statuscode).to.eql(403);",
+									"});",
+									"",
+									"// 10. Message format matches expected structure",
+									"pm.test(\"Message format is valid\", function () {",
+									"    pm.expect(response.message).to.match(/please enter a valid batchid/i);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchid\": \"@#$#@\",\n    \"status\": \"Accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/updateBatchStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"updateBatchStatus"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDM1MDU3MjEsIkVtYWlsSWQiOiJ0ZXN0dmExQGdtYWlsLmNvbSIsIlJvbGUiOiJWZXJpZmljYXRpb24iLCJ1c2VySWQiOiI4YTlhOTk4Mi0zNjA4LTRiZGUtOWQ3Zi1mZmUzMjc1ZjA0MzgiLCJpYXQiOjE3NDM1MDIxMjF9.KPa0Hb9RKREUUs1yy44dWaiUkTe7NS0JWn7ZE9MDSg0",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Paying Agent token ",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDM1MDYwMDgsIkVtYWlsSWQiOiJ0ZXN0cGExQGludGFpbmZ0LmNvbSIsIlJvbGUiOiJQYXlpbmcgQWdlbnQiLCJ1c2VySWQiOiJhYTFhYzM4MS1hOTU1LTQ0NDgtYjQyOS04ZmUyNDEyNmMwY2EiLCJpYXQiOjE3NDM1MDI0MDh9.CuLAPqg98Zg2cqWj-MlSiU_FlCFykAvD3kmTc5AeiU0",
+			"type": "string"
+		},
+		{
+			"key": "Expired Token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDIwMTg5MDAsIkVtYWlsSWQiOiJ0ZXN0aXMyQGludGFpbmZ0LmNvbSIsIlJvbGUiOiJJc3N1ZXIiLCJ1c2VySWQiOiIxOTdmNjhhMi1kN2I5LTQyZWUtOGFjMC0xNmMzMTY1NzllNjkiLCJpYXQiOjE3NDE5MzI1MDB9.lbBiDomGMXmNwaqoWgsTwVHAST3X-sHyFqeNjS_P3iE",
+			"type": "string"
+		}
+	]
+}

@@ -35,7 +35,8 @@ jobs:
 
       - name: Run API Tests, Capture Logs, and Generate CSV Report
         run: |
-          newman run tests/postman_collection.json \
+          newman run tests/"Verification agent.postman_collection.json" \
+            -e tests/"IM_TestNetwork.postman_environment.json" \
             --reporters cli,csv \
             --reporter-csv-export results/results.csv | tee results/newman_log.txt
 
@@ -61,7 +62,6 @@ jobs:
 
             Please find attached the latest API test report below:
 
-        
           to: udhaya.kumar@intainft.com,thutta.raju@intainft.com
           from: Newman Alert
           attachments: results/results.csv, results/newman_log.txt
