@@ -62,6 +62,6 @@ jobs:
 
             Please find attached the latest API test report below:
 
-          to: udhaya.kumar@intainft.com,thutta.raju@intainft.com
+          to: udhaya.kumar@intainft.com,srihari.sardena@intainft.com
           from: Newman Alert
           attachments: results/results.csv, results/newman_log.txt
